@@ -5,8 +5,8 @@ on:
     branches:
       - main
       - master
-  pull_request:
-    types: [opened]
+  pull_request_target:
+    types: [opened, synchronize]
 
 jobs:
   build-and-deploy:
@@ -17,6 +17,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.sha || github.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
           fetch-depth: 0
 
       - name: Setup Node.js
@@ -36,17 +38,25 @@ jobs:
         if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
         id: deploy-prod
         run: |
+          if [ -z "$EDGEONE_API_TOKEN" ]; then
+            echo "::error::EDGEONE_API_TOKEN 未配置，请在仓库 Settings → Secrets 中添加"
+            exit 1
+          fi
           echo "Deploying to EdgeOne Pages (production)..."
-          npx edgeone pages deploy . -n kaleidxscope -t ${{ secrets.EDGEONE_API_TOKEN }} -e production
+          npx edgeone pages deploy . -n kaleidxscope -t $EDGEONE_API_TOKEN -e production
         env:
           EDGEONE_API_TOKEN: ${{ secrets.EDGEONE_API_TOKEN }}
 
       - name: Deploy to EdgeOne Pages (Preview)
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request_target'
         id: deploy-preview
         run: |
+          if [ -z "$EDGEONE_API_TOKEN" ]; then
+            echo "::error::EDGEONE_API_TOKEN 未配置，请在仓库 Settings → Secrets 中添加"
+            exit 1
+          fi
           echo "Deploying to EdgeOne Pages (preview)..."
-          DEPLOY_OUTPUT=$(npx edgeone pages deploy . -n kaleidxscope -t ${{ secrets.EDGEONE_API_TOKEN }} -e preview 2>&1)
+          DEPLOY_OUTPUT=$(npx edgeone pages deploy . -n kaleidxscope -t $EDGEONE_API_TOKEN -e preview 2>&1)
           echo "$DEPLOY_OUTPUT"
           DEPLOY_URL=$(echo "$DEPLOY_OUTPUT" | grep "EDGEONE_DEPLOY_URL=" | cut -d'=' -f2- || echo "")
           PROJECT_ID=$(echo "$DEPLOY_OUTPUT" | grep "EDGEONE_PROJECT_ID=" | cut -d'=' -f2- || echo "")
@@ -58,9 +68,10 @@ jobs:
           EDGEONE_API_TOKEN: ${{ secrets.EDGEONE_API_TOKEN }}
 
       - name: Comment PR with preview link
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request_target'
         uses: thollander/actions-comment-pull-request@v2
         with:
+          comment_tag: edgeone-preview
           message: |
             🚀 **EdgeOne Pages 部署完成**
             
