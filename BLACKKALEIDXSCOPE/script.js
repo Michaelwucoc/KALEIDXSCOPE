@@ -271,6 +271,7 @@ document.getElementById('gate-random').addEventListener('click', () => {
     blackGateChallengeRun = randomPickBlackGateChallenge();
     renderBlackGateChallengeRun();
     if (typeof umami !== 'undefined') umami.track('gate-challenge-random-black', { track1: blackGateChallengeRun[0], track2: blackGateChallengeRun[1] });
+    if (typeof posthog !== 'undefined' && posthog.capture) posthog.capture('gate-challenge-random-black', { track1: blackGateChallengeRun[0], track2: blackGateChallengeRun[1] });
 });
 
 document.getElementById('reset').addEventListener('click', () => {
@@ -281,6 +282,7 @@ document.getElementById('reset').addEventListener('click', () => {
         renderSongs();
         updateRemainingList();
         if (typeof umami !== 'undefined') umami.track('black-gate-reset-confirmed');
+        if (typeof posthog !== 'undefined' && posthog.capture) posthog.capture('black-gate-reset-confirmed');
     }
 });
 
@@ -324,6 +326,7 @@ document.getElementById('import-confirm').addEventListener('click', () => {
         updateRemainingList();
         document.getElementById('import-modal').style.display = 'none';
         if (typeof umami !== 'undefined') umami.track('black-gate-import-success');
+        if (typeof posthog !== 'undefined' && posthog.capture) posthog.capture('black-gate-import-success');
     } catch (e) {
         errEl.textContent = '导入失败：' + (e.message || '数据格式错误');
         errEl.style.display = 'block';
