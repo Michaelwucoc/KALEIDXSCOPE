@@ -1,4 +1,4 @@
-/* GitHub 浮动角标 - 右下角 */
+/* 浮动角标 - 右下角（QQ 社群 + GitHub） */
 .github-footer-float {
     position: fixed;
     right: 20px;
@@ -7,14 +7,20 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
+    gap: 12px;
     font-size: 11px;
     color: #666;
-    text-decoration: none;
     transition: opacity 0.2s;
 }
 
-.github-footer-float:hover {
+.footer-float-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.footer-float-item a:hover {
     opacity: 0.85;
 }
 
@@ -24,7 +30,7 @@
     }
 }
 
-.github-footer-link {
+.footer-float-link {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -34,32 +40,45 @@
     border-radius: 50%;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
     transition: transform 0.2s;
+    text-decoration: none;
+    color: inherit;
 }
 
-.github-footer-link:hover {
+.footer-float-link:hover {
     transform: scale(1.05);
 }
 
 @media (prefers-color-scheme: dark) {
-    .github-footer-link {
+    .footer-float-link {
         background: #3d3d3d;
         box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
     }
 }
 
-.github-footer-link svg {
+.footer-float-link svg {
     width: 24px;
     height: 24px;
+}
+
+.github-footer-link svg {
     fill: #333;
+}
+
+.qq-footer-link svg {
+    fill: #12b7f5;
 }
 
 @media (prefers-color-scheme: dark) {
     .github-footer-link svg {
         fill: #e0e0e0;
     }
+    .qq-footer-link svg {
+        fill: #12b7f5;
+    }
 }
 
-.github-footer-update {
+.github-footer-update,
+.footer-float-label {
     font-size: 10px;
     opacity: 0.8;
     white-space: nowrap;
@@ -70,11 +89,15 @@ body.theme-black .github-footer-float {
     color: #333;
 }
 
-body.theme-black .github-footer-link {
+body.theme-black .footer-float-link {
     background: #fff;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 }
 
 body.theme-black .github-footer-link svg {
     fill: #333;
+}
+
+body.theme-black .qq-footer-link svg {
+    fill: #12b7f5;
 }
