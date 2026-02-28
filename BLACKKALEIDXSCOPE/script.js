@@ -191,7 +191,7 @@ function updateRemainingList() {
             <div class="remaining-cover-wrap" data-song-id="${song.id}" title="双击/长按查看乐曲详情">
                 <img src="https://assets.awmc.cc/covers/${song.id}.png" alt="暂无曲绘" class="remaining-cover" onerror="this.onerror=null;this.src='${noCoverSvg}'">
             </div>
-            <div class="remaining-info" data-song-id="${song.id">
+            <div class="remaining-info" data-song-id="${song.id}">
                 <strong>${(song.name || '').replace(/</g, '&lt;')}</strong>
             </div>
         </div>

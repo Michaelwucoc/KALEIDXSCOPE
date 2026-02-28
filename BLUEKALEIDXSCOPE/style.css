@@ -775,11 +775,19 @@ header h1 {
     font-size: 0.9em;
     color: #666;
     transition: color 0.3s ease;
+    line-height: 1.5;
+}
+
+body.theme-blue .song-details {
+    color: #1e3a5f;
 }
 
 @media (prefers-color-scheme: dark) {
     .song-details {
         color: #b0b0b0;
+    }
+    body.theme-blue .song-details {
+        color: #bfdbfe;
     }
 }
 

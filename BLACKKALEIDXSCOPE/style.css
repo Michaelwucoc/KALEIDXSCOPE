@@ -133,6 +133,7 @@ body.theme-black .song-details,
 body.theme-black .reference-song-id,
 body.theme-black .gate-challenge-desc {
     color: #555;
+    line-height: 1.5;
 }
 
 body.theme-black .gate-track-title,

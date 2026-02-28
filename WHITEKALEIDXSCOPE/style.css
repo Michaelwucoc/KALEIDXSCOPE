@@ -923,11 +923,19 @@ header h1 {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+    line-height: 1.5;
+}
+
+body.theme-white .run-song-card .song-details {
+    color: #134e4a;
 }
 
 @media (prefers-color-scheme: dark) {
     .run-song-card .song-details {
         color: #a0a0a0;
+    }
+    body.theme-white .run-song-card .song-details {
+        color: #ccfbf1;
     }
 }
 
@@ -1048,17 +1056,25 @@ header h1 {
 }
 
 .pool-song-card .song-details {
-    font-size: 0.85em;
+    font-size: 0.9em;
     color: #666;
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+body.theme-white .pool-song-card .song-details {
+    color: #134e4a;
 }
 
 @media (prefers-color-scheme: dark) {
     .pool-song-card .song-details {
         color: #a0a0a0;
+    }
+    body.theme-white .pool-song-card .song-details {
+        color: #ccfbf1;
     }
 }
 
@@ -1331,11 +1347,19 @@ header h1 {
     font-size: 0.9em;
     color: #666;
     transition: color 0.3s ease;
+    line-height: 1.5;
+}
+
+body.theme-white .song-details {
+    color: #134e4a;
 }
 
 @media (prefers-color-scheme: dark) {
     .song-details {
         color: #b0b0b0;
+    }
+    body.theme-white .song-details {
+        color: #ccfbf1;
     }
 }
 

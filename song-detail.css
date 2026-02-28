@@ -39,6 +39,40 @@
     line-height: 1.45;
 }
 
+/* 亮色模式下乐曲详情模态框可读性（白/蓝/紫门） */
+@media (prefers-color-scheme: light) {
+    body:not(.theme-black) .song-detail-title {
+        color: #1a1a1a;
+    }
+    body:not(.theme-black) .song-detail-type {
+        background: #e9ecef;
+        color: #555;
+    }
+    body:not(.theme-black) .song-detail-meta {
+        color: #555;
+    }
+    body:not(.theme-black) .song-detail-diff-table th,
+    body:not(.theme-black) .song-detail-diff-table td {
+        border-color: #dee2e6;
+    }
+    body:not(.theme-black) .song-detail-diff-table th {
+        background: #f1f3f5;
+        color: #212529;
+    }
+    body:not(.theme-black) .song-detail-diff-table td {
+        color: #333;
+    }
+    body:not(.theme-black) .song-detail-diff-table tbody tr:hover td:not(.diff-name) {
+        background: #f8f9fa;
+    }
+    body:not(.theme-black) .song-detail-footer {
+        border-top-color: #e9ecef;
+    }
+    body:not(.theme-black) .song-detail-loading {
+        color: #666;
+    }
+}
+
 .song-detail-type {
     display: inline-block;
     padding: 2px 8px;
@@ -139,6 +173,78 @@
     background: rgba(255, 255, 255, 0.1);
     border-radius: 4px;
     font-size: 0.85em;
+}
+
+/* 紫色主题：提升卡片标签可读性 */
+body.theme-purple .song-detail-tag {
+    font-size: 0.9em;
+    font-weight: 500;
+    padding: 5px 10px;
+    background: rgba(124, 58, 237, 0.14);
+    color: #4a3d6b;
+    border: 1px solid rgba(124, 58, 237, 0.25);
+}
+
+@media (prefers-color-scheme: dark) {
+    body.theme-purple .song-detail-tag {
+        background: rgba(139, 92, 246, 0.25);
+        color: #e8e0f5;
+        border-color: rgba(167, 139, 250, 0.35);
+    }
+}
+
+/* 蓝色主题：提升卡片标签可读性 */
+body.theme-blue .song-detail-tag {
+    font-size: 0.9em;
+    font-weight: 500;
+    padding: 5px 10px;
+    background: rgba(13, 110, 253, 0.12);
+    color: #1e3a5f;
+    border: 1px solid rgba(13, 110, 253, 0.25);
+}
+
+@media (prefers-color-scheme: dark) {
+    body.theme-blue .song-detail-tag {
+        background: rgba(59, 130, 246, 0.22);
+        color: #bfdbfe;
+        border-color: rgba(96, 165, 250, 0.35);
+    }
+}
+
+/* 白色之门主题：提升卡片标签可读性 */
+body.theme-white .song-detail-tag {
+    font-size: 0.9em;
+    font-weight: 500;
+    padding: 5px 10px;
+    background: rgba(13, 148, 136, 0.12);
+    color: #134e4a;
+    border: 1px solid rgba(20, 184, 166, 0.25);
+}
+
+@media (prefers-color-scheme: dark) {
+    body.theme-white .song-detail-tag {
+        background: rgba(45, 212, 191, 0.2);
+        color: #ccfbf1;
+        border-color: rgba(94, 234, 212, 0.35);
+    }
+}
+
+/* 黑色之门主题：提升卡片标签可读性 */
+body.theme-black .song-detail-tag {
+    font-size: 0.9em;
+    font-weight: 500;
+    padding: 5px 10px;
+    background: rgba(74, 106, 138, 0.2);
+    color: #2a3d52;
+    border: 1px solid rgba(100, 120, 150, 0.35);
+}
+
+@media (prefers-color-scheme: dark) {
+    body.theme-black .song-detail-tag {
+        background: rgba(186, 204, 223, 0.25);
+        color: #1a1a1a;
+        border-color: rgba(186, 204, 223, 0.4);
+    }
 }
 
 /* 展示设置模态框 */
