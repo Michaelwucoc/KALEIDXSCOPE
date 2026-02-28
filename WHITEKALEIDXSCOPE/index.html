@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚪️ 舞萌DX - 白色之门解锁进度 Version 1.3 -</title>
+    <title>⚪️ 舞萌DX - 白色之门解锁进度 Version __APP_VERSION__ -</title>
     <link rel="icon" type="image/png" href="../favicon.png">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../song-detail.css">
     <link rel="stylesheet" href="../github-footer.css">
     <script defer src="https://s.awmc.cc/script.js" data-website-id="4416a8d7-49f0-4b07-a14a-e82d30716b2a"></script>
     <script defer src="../posthog.js"></script>
@@ -206,6 +207,24 @@
             <button id="reset" class="btn btn-danger" data-umami-event="button-reset-white">重置进度</button>
         </div>
 
+        <!-- 乐曲详情模态框 -->
+        <div id="song-detail-modal" class="modal song-detail-modal" style="display: none;">
+            <div class="modal-content song-detail-content">
+                <div class="modal-header">
+                    <h2>乐曲信息</h2>
+                    <span class="modal-close" id="song-detail-close">&times;</span>
+                </div>
+                <div class="modal-body song-detail-body">
+                    <div id="song-detail-loading" class="song-detail-loading">加载中…</div>
+                    <div id="song-detail-content" class="song-detail-content-inner" style="display: none;"></div>
+                    <div id="song-detail-error" class="song-detail-error" style="display: none;"></div>
+                </div>
+                <div class="song-detail-footer">
+                    <button id="song-detail-refresh" class="btn btn-info btn-sm">刷新乐曲数据</button>
+                </div>
+            </div>
+        </div>
+
         <!-- 导入模态框 -->
         <div id="import-modal" class="modal" style="display: none;">
             <div class="modal-content">
@@ -225,9 +244,25 @@
             </div>
         </div>
 
+        <div id="song-display-settings-modal" class="song-display-settings-modal">
+            <div class="song-display-settings-content">
+                <h3>设置展示信息</h3>
+                <p style="color:#b0b0b0;font-size:0.9rem;margin-bottom:12px">选择在曲目卡片上展示的字段（优先从乐曲数据获取）</p>
+                <div class="song-display-settings-list"></div>
+                <div class="song-display-settings-actions">
+                    <button type="button" class="btn btn-secondary song-display-settings-close">取消</button>
+                    <button type="button" class="btn btn-primary song-display-settings-save" data-umami-event="song-display-settings-save-white">保存</button>
+                </div>
+            </div>
+        </div>
+
         <!-- 曲目池：可手动选择添加到单人/多人 -->
         <div class="songs-pool-section">
             <h2>曲目池（作曲家含【奏音】或【大国奏音】）</h2>
+            <p class="song-detail-hint">
+                <span class="song-detail-hint-icon">💡</span>双击/长按曲绘可查看乐曲详情（含难度定数）
+                <button type="button" id="song-display-settings-btn" class="song-display-settings-btn-wrap" data-umami-event="song-display-settings-btn-white">⚙️ 设置展示信息</button>
+            </p>
             <p class="pool-desc">点击下方按钮可将曲目添加到单人（3首）或多人（4首）游玩列表</p>
             <div class="songs-list" id="songs-list"></div>
         </div>
@@ -269,7 +304,7 @@
             <div class="reference-block">
                 <h3 class="reference-block-title">完美挑战</h3>
                 <div class="reference-item">
-                    <div class="reference-cover">
+                    <div class="reference-cover" data-song-id="11744" title="双击/长按查看乐曲详情">
                         <img src="https://assets.awmc.cc/covers/11744.png" alt="Deicide" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\'%3E%3Crect fill=\'%23ddd\' width=\'40\' height=\'40\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%23999\' font-size=\'8\'%3E暂无曲绘%3C/text%3E%3C/svg%3E'">
                     </div>
                     <div class="reference-info">
@@ -281,7 +316,7 @@
             <div class="reference-block">
                 <h3 class="reference-block-title">门曲</h3>
                 <div class="reference-item">
-                    <div class="reference-cover">
+                    <div class="reference-cover" data-song-id="11745" title="双击/长按查看乐曲详情">
                         <img src="https://assets.awmc.cc/covers/11745.png" alt="氷滅の135小節" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\'%3E%3Crect fill=\'%23ddd\' width=\'40\' height=\'40\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%23999\' font-size=\'8\'%3E暂无曲绘%3C/text%3E%3C/svg%3E'">
                     </div>
                     <div class="reference-info">
@@ -298,6 +333,10 @@
         </div>
     </div>
 
+    <script src="../songs-config.js"></script>
+    <script src="../music-data.js"></script>
+    <script src="../song-display.js"></script>
+    <script src="../song-detail.js"></script>
     <script src="script.js"></script>
     <div class="github-footer-float">
         <div class="footer-float-item">
