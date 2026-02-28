@@ -1,74 +1,8 @@
-// 门中随机选曲
-const PURPLE_GATE_TRACK1_POOL = [
-    { id: '328', name: '言ノ葉カルマ' },
-    { id: '403', name: '悪戯' },
-    { id: '457', name: '言ノ葉遊戯' },
-    { id: '458', name: 'りばーぶ' },
-    { id: '532', name: '洗脳' },
-    { id: '533', name: 'Barbed Eye' },
-    { id: '559', name: '空威張りビヘイビア' },
-    { id: '568', name: '分からない' },
-    { id: '613', name: '天国と地獄 -言ノ葉リンネ-' },
-    { id: '626', name: '相思創愛' },
-    { id: '673', name: '咲キ誇レ常世ノ華' }
-];
-const PURPLE_GATE_TRACK2_POOL = [
-    { id: '11001', name: 'BLACK ROSE' },
-    { id: '11002', name: 'Secret Sleuth' },
-    { id: '11104', name: 'ヤミツキ' },
-    { id: '11105', name: 'ワードワードワード' },
-    { id: '11168', name: 'シアトリカル・ケース' },
-    { id: '11169', name: 'ステップアンドライム' },
-    { id: '11170', name: '届かない花束' },
-    { id: '11365', name: 'アンビバレンス' },
-    { id: '11380', name: 'パーフェクション' },
-    { id: '11381', name: 'デーモンベット' },
-    { id: '11456', name: '分解収束テイル' },
-    { id: '11532', name: 'ヱデン' },
-    { id: '11533', name: 'にゃーにゃー冒険譚' },
-    { id: '11613', name: 'Mystic Parade' },
-    { id: '11614', name: 'Cry Cry Cry' },
-    { id: '11747', name: '地獄' },
-    { id: '11748', name: 'シスターシスター' }
-];
-const PURPLE_GATE_TRACK3_FIXED = { id: '11749', name: '有明/Ariake' };
-const purpleGateChallengeById = Object.fromEntries([
-    ...PURPLE_GATE_TRACK1_POOL.map(s => [s.id, s]),
-    ...PURPLE_GATE_TRACK2_POOL.map(s => [s.id, s]),
-    [PURPLE_GATE_TRACK3_FIXED.id, PURPLE_GATE_TRACK3_FIXED]
-]);
-
-// 钥匙要求曲目 28首（版本 GreeN/ORANGE/PiNK 等转换为舞萌年份）
-const songs = [
-    { id: '328', name: '言ノ葉カルマ', version: '舞萌 2020', difficulty: '13.4' },
-    { id: '403', name: '悪戯', version: '舞萌 2021', difficulty: '12.9' },
-    { id: '457', name: '言ノ葉遊戯', version: '舞萌 2022', difficulty: '12.7' },
-    { id: '458', name: 'りばーぶ', version: '舞萌 2022', difficulty: '11.0' },
-    { id: '532', name: '洗脳', version: '舞萌 2022', difficulty: '12.9' },
-    { id: '533', name: 'Barbed Eye', version: '舞萌 2022', difficulty: '13.0' },
-    { id: '559', name: '空威張りビヘイビア', version: '舞萌 2023', difficulty: '13.7' },
-    { id: '568', name: '分からない', version: '舞萌 2023', difficulty: '14.0' },
-    { id: '613', name: '天国と地獄 -言ノ葉リンネ-', version: '舞萌 2023', difficulty: '13.3' },
-    { id: '626', name: '相思創愛', version: '舞萌 2023', difficulty: '13.5' },
-    { id: '673', name: '咲キ誇レ常世ノ華', version: '舞萌 2024', difficulty: '13.5' },
-    { id: '11001', name: 'BLACK ROSE', version: '舞萌 2020', difficulty: '12.2' },
-    { id: '11002', name: 'Secret Sleuth', version: '舞萌 2020', difficulty: '13.8' },
-    { id: '11104', name: 'ヤミツキ', version: '舞萌 2021', difficulty: '12.7' },
-    { id: '11105', name: 'ワードワードワード', version: '舞萌 2021', difficulty: '13.4' },
-    { id: '11168', name: 'シアトリカル・ケース', version: '舞萌 2022', difficulty: '12.8' },
-    { id: '11169', name: 'ステップアンドライム', version: '舞萌 2022', difficulty: '12.8' },
-    { id: '11170', name: '届かない花束', version: '舞萌 2022', difficulty: '13.1' },
-    { id: '11365', name: 'アンビバレンス', version: '舞萌 2023', difficulty: '13.0' },
-    { id: '11380', name: 'パーフェクション', version: '舞萌 2023', difficulty: '13.4' },
-    { id: '11381', name: 'デーモンベット', version: '舞萌 2023', difficulty: '13.2' },
-    { id: '11456', name: '分解収束テイル', version: '舞萌 2024', difficulty: '13.7' },
-    { id: '11532', name: 'ヱデン', version: '舞萌 2024', difficulty: '12.8' },
-    { id: '11533', name: 'にゃーにゃー冒険譚', version: '舞萌 2024', difficulty: '13.7' },
-    { id: '11613', name: 'Mystic Parade', version: '舞萌 2025', difficulty: '13.5' },
-    { id: '11614', name: 'Cry Cry Cry', version: '舞萌 2025', difficulty: '13.8' },
-    { id: '11747', name: '地獄', version: '舞萌 2025', difficulty: '13.6' },
-    { id: '11748', name: 'シスターシスター', version: '舞萌 2025', difficulty: '13.2' }
-];
+// 使用集中配置
+const { songs, gate } = SongsConfig.purple;
+const PURPLE_GATE_TRACK1_POOL = gate.track1;
+const PURPLE_GATE_TRACK2_POOL = gate.track2;
+const PURPLE_GATE_TRACK3_FIXED = gate.track3;
 const songsById = Object.fromEntries(songs.map(s => [s.id, s]));
 
 // 区域开放时间 2026/03/25 10:00:00 (UTC+8 北京时间)
@@ -161,7 +95,7 @@ function renderPurpleGateChallengeRun() {
             const coverUrl = `https://assets.awmc.cc/covers/${s.id}.png`;
             return `
                 <div class="gate-song-chip expandable ${isSelected ? 'selected' : ''}" data-id="${s.id}">
-                    <div class="gate-chip-cover">
+                    <div class="gate-chip-cover" data-song-id="${s.id}" title="双击/长按查看乐曲详情">
                         <img src="${coverUrl}" alt="${s.name}" onerror="this.src='${noCoverSvg}'">
                     </div>
                     <span class="gate-chip-name">${s.name}</span>
@@ -174,7 +108,7 @@ function renderPurpleGateChallengeRun() {
     track2El.innerHTML = renderTrack(PURPLE_GATE_TRACK2_POOL, selected2);
     track3El.innerHTML = `
         <div class="gate-song-chip expandable selected" data-id="${PURPLE_GATE_TRACK3_FIXED.id}">
-            <div class="gate-chip-cover">
+            <div class="gate-chip-cover" data-song-id="${PURPLE_GATE_TRACK3_FIXED.id}" title="双击/长按查看乐曲详情">
                 <img src="https://assets.awmc.cc/covers/${PURPLE_GATE_TRACK3_FIXED.id}.png" alt="${PURPLE_GATE_TRACK3_FIXED.name}" onerror="this.src='${noCoverSvg}'">
             </div>
             <span class="gate-chip-name">${PURPLE_GATE_TRACK3_FIXED.name}</span>
@@ -263,7 +197,14 @@ function addToMulti(songId) {
     renderMultiRun();
 }
 
-// 从单人/双人列表中移除曲目
+function updatePurpleSongDetails(container, songId, fallback) {
+    if (typeof SongDisplay === 'undefined') return;
+    SongDisplay.getMusicDataThen(songId, fallback, (info) => {
+        const fields = SongDisplay.getDisplayFields();
+        container.innerHTML = SongDisplay.renderSongDetailsHtml(fields, info);
+    });
+}
+
 function removeFromRun(mode, songId) {
     if (!progress[mode]) return;
     progress[mode].run = progress[mode].run.filter(id => id !== songId);
@@ -286,26 +227,24 @@ function renderSoloRun() {
     }
     placeholder.style.display = 'none';
     list.innerHTML = run.map(id => {
-        const song = songsById[id];
-        if (!song) return '';
+        const song = songsById[id] || { id, name: '-' };
         const coverUrl = `https://assets.awmc.cc/covers/${id}.png`;
         return `
             <div class="run-song-card" data-song-id="${id}" data-mode="solo">
-                <div class="song-cover">
-                    <img src="${coverUrl}" alt="${song.name}" onerror="this.src='${noCoverSvg}'">
+                <div class="song-cover" data-song-id="${id}" title="双击/长按查看乐曲详情">
+                    <img src="${coverUrl}" alt="${(song.name || '').replace(/"/g, '&quot;')}" onerror="this.src='${noCoverSvg}'">
                 </div>
                 <div class="song-info">
-                    <div class="song-name">${song.name}</div>
-                    <div class="song-details">
-                        <span>ID: ${id}</span>
-                        <span>${song.version}</span>
-                        <span>难度: ${song.difficulty}</span>
-                    </div>
+                    <div class="song-name">${(song.name || '-').replace(/</g, '&lt;')}</div>
+                    <div class="song-details" data-song-id="${id}"></div>
                     <button class="btn-remove" data-remove="solo" data-song-id="${id}" data-umami-event="run-remove-solo-purple" data-umami-event-song-id="${id}" title="移除此曲目">×</button>
                 </div>
             </div>
         `;
     }).join('');
+    list.querySelectorAll('.song-details[data-song-id]').forEach(el => {
+        updatePurpleSongDetails(el, el.dataset.songId, songsById[el.dataset.songId]);
+    });
     list.querySelectorAll('[data-remove="solo"]').forEach(btn => {
         btn.addEventListener('click', () => removeFromRun('solo', btn.dataset.songId));
     });
@@ -324,32 +263,29 @@ function renderMultiRun() {
     }
     placeholder.style.display = 'none';
     list.innerHTML = run.map(id => {
-        const song = songsById[id];
-        if (!song) return '';
+        const song = songsById[id] || { id, name: '-' };
         const coverUrl = `https://assets.awmc.cc/covers/${id}.png`;
         return `
             <div class="run-song-card" data-song-id="${id}" data-mode="multi">
-                <div class="song-cover">
-                    <img src="${coverUrl}" alt="${song.name}" onerror="this.src='${noCoverSvg}'">
+                <div class="song-cover" data-song-id="${id}" title="双击/长按查看乐曲详情">
+                    <img src="${coverUrl}" alt="${(song.name || '').replace(/"/g, '&quot;')}" onerror="this.src='${noCoverSvg}'">
                 </div>
                 <div class="song-info">
-                    <div class="song-name">${song.name}</div>
-                    <div class="song-details">
-                        <span>ID: ${id}</span>
-                        <span>${song.version}</span>
-                        <span>难度: ${song.difficulty}</span>
-                    </div>
+                    <div class="song-name">${(song.name || '-').replace(/</g, '&lt;')}</div>
+                    <div class="song-details" data-song-id="${id}"></div>
                     <button class="btn-remove" data-remove="multi" data-song-id="${id}" data-umami-event="run-remove-multi-purple" data-umami-event-song-id="${id}" title="移除此曲目">×</button>
                 </div>
             </div>
         `;
     }).join('');
+    list.querySelectorAll('.song-details[data-song-id]').forEach(el => {
+        updatePurpleSongDetails(el, el.dataset.songId, songsById[el.dataset.songId]);
+    });
     list.querySelectorAll('[data-remove="multi"]').forEach(btn => {
         btn.addEventListener('click', () => removeFromRun('multi', btn.dataset.songId));
     });
 }
 
-// 渲染曲目池（可添加到单人/双人）
 function renderSongsPool() {
     const list = document.getElementById('pool-songs-list');
     if (!list) return;
@@ -357,29 +293,28 @@ function renderSongsPool() {
         const coverUrl = `https://assets.awmc.cc/covers/${song.id}.png`;
         return `
             <div class="pool-song-card" data-song-id="${song.id}">
-                <div class="song-cover">
-                    <img src="${coverUrl}" alt="${song.name}" onerror="this.src='${noCoverSvg}'">
+                <div class="song-cover" data-song-id="${song.id}" title="双击/长按查看乐曲详情">
+                    <img src="${coverUrl}" alt="${(song.name || '').replace(/"/g, '&quot;')}" onerror="this.src='${noCoverSvg}'">
                 </div>
                 <div class="song-info">
-                    <div class="song-name">${song.name}</div>
-                    <div class="song-details">
-                        <span>ID: ${song.id}</span>
-                        <span>${song.version}</span>
-                        <span>难度: ${song.difficulty}</span>
-                    </div>
+                    <div class="song-name">${(song.name || '-').replace(/</g, '&lt;')}</div>
+                    <div class="song-details" data-song-id="${song.id}"></div>
                     <div class="pool-actions">
-                        <button class="btn btn-small btn-solo" data-add-solo="${song.id}" data-umami-event="pool-add-solo-purple" data-umami-event-song-id="${song.id}" data-umami-event-song-name="${song.name.replace(/"/g, '&quot;')}">添加到单人</button>
-                        <button class="btn btn-small btn-multi" data-add-multi="${song.id}" data-umami-event="pool-add-multi-purple" data-umami-event-song-id="${song.id}" data-umami-event-song-name="${song.name.replace(/"/g, '&quot;')}">添加到双人</button>
+                        <button class="btn btn-small btn-solo" data-add-solo="${song.id}" data-umami-event="pool-add-solo-purple" data-umami-event-song-id="${song.id}" data-umami-event-song-name="${(song.name || '').replace(/"/g, '&quot;')}">添加到单人</button>
+                        <button class="btn btn-small btn-multi" data-add-multi="${song.id}" data-umami-event="pool-add-multi-purple" data-umami-event-song-id="${song.id}" data-umami-event-song-name="${(song.name || '').replace(/"/g, '&quot;')}">添加到双人</button>
                     </div>
                 </div>
             </div>
         `;
     }).join('');
+    list.querySelectorAll('.song-details[data-song-id]').forEach(el => {
+        updatePurpleSongDetails(el, el.dataset.songId, songs.find(s => s.id === el.dataset.songId));
+    });
     list.querySelectorAll('[data-add-solo]').forEach(btn => {
-        btn.addEventListener('click', () => addToSolo(btn.dataset.addSolo));
+        btn.addEventListener('click', () => { addToSolo(btn.dataset.addSolo); if (typeof umami !== 'undefined') umami.track('pool-add-solo-purple', { song_id: btn.dataset.addSolo }); });
     });
     list.querySelectorAll('[data-add-multi]').forEach(btn => {
-        btn.addEventListener('click', () => addToMulti(btn.dataset.addMulti));
+        btn.addEventListener('click', () => { addToMulti(btn.dataset.addMulti); if (typeof umami !== 'undefined') umami.track('pool-add-multi-purple', { song_id: btn.dataset.addMulti }); });
     });
 }
 
@@ -497,6 +432,7 @@ document.getElementById('multi-clear')?.addEventListener('click', () => {
 document.getElementById('gate-random').addEventListener('click', () => {
     purpleGateChallengeRun = randomPickPurpleGateChallenge();
     renderPurpleGateChallengeRun();
+    if (typeof umami !== 'undefined') umami.track('gate-challenge-random-purple');
     const body = document.getElementById('gate-challenge-body');
     if (body && body.style.display === 'none') {
         body.style.display = 'block';
@@ -518,3 +454,6 @@ renderSongsPool();
 renderPurpleGateChallengeRun();
 initPurpleGateChallengeSection();
 initExpandClick();
+if (typeof SongDetail !== 'undefined') SongDetail.init();
+if (typeof SongDisplay !== 'undefined') SongDisplay.initDisplaySettings('purple');
+window.addEventListener('song-display-changed', () => { renderSoloRun(); renderMultiRun(); renderSongsPool(); });

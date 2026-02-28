@@ -26,12 +26,13 @@ jobs:
         with:
           node-version: '22.11.0'
 
-      - name: Inject last update time
+      - name: Inject last update time and version
         run: |
           LAST_UPDATE=$(git log -1 --format=%cd --date=format:'%Y-%m-%d')
           echo "Last update: $LAST_UPDATE"
           find . -name "*.html" -not -path "./.git/*" | while read f; do
             sed -i "s/__LAST_UPDATE__/$LAST_UPDATE/g" "$f"
+            sed -i "s/__APP_VERSION__/$LAST_UPDATE/g" "$f"
           done
 
       - name: Deploy to EdgeOne Pages (Production)

@@ -1,76 +1,8 @@
-// 门中随机选曲：1曲目池、2曲目池、3曲目固定
-const BLUE_GATE_TRACK1_POOL = [
-    { id: '11008', name: 'Crazy Circle' },
-    { id: '11009', name: 'STEREOSCAPE' },
-    { id: '11100', name: 'シエルブルーマルシェ' },
-    { id: '11097', name: 'ブレインジャックシンドローム' },
-    { id: '11098', name: '共鳴' },
-    { id: '11099', name: 'Ututu' },
-    { id: '11161', name: 'オリフィス' },
-    { id: '11162', name: 'ユメヒバナ' },
-    { id: '11163', name: 'REAL VOICE' },
-    { id: '11228', name: '星めぐり、果ての君へ。' },
-    { id: '11229', name: 'スローアライズ' },
-    { id: '11231', name: '生命不詳' },
-    { id: '11463', name: 'RIFFRAIN' },
-    { id: '11464', name: 'Falling' },
-    { id: '11465', name: 'ピリオドサイン' },
-    { id: '11538', name: 'アンバークロニクル' },
-    { id: '11539', name: 'リフヴェイン' },
-    { id: '11541', name: '宵の鳥' },
-    { id: '11620', name: 'フェイクフェイス・フェイルセイフ' },
-    { id: '11622', name: 'シックスプラン' },
-    { id: '11623', name: 'フタタビ' },
-    { id: '11737', name: 'パラドクスイヴ' },
-    { id: '11738', name: 'YKWTD' }
-];
-const BLUE_GATE_TRACK2_POOL = [
-    { id: '11164', name: 'パラボラ' },
-    { id: '11230', name: 'チエルカ／エソテリカ' },
-    { id: '11466', name: '群青シグナル' },
-    { id: '11540', name: 'Kairos' },
-    { id: '11621', name: 'ふらふらふら、' },
-    { id: '11739', name: '184億回のマルチトニック' }
-];
-const BLUE_GATE_TRACK3_FIXED = { id: '11740', name: '果ての空、僕らが見た光。' };
-const blueGateChallengeById = Object.fromEntries([
-    ...BLUE_GATE_TRACK1_POOL.map(s => [s.id, s]),
-    ...BLUE_GATE_TRACK2_POOL.map(s => [s.id, s]),
-    [BLUE_GATE_TRACK3_FIXED.id, BLUE_GATE_TRACK3_FIXED]
-]);
-
-// 从PDF提取的29首乐曲数据
-const songs = [
-    { id: '11009', name: 'STEREOSCAPE', version: '舞萌 DX 12.4', difficulty: '12.4' },
-    { id: '11008', name: 'Crazy Circle', version: '舞萌 DX 12.6', difficulty: '12.6' },
-    { id: '11100', name: 'シエルブルーマルシェ', version: '舞萌 2021', difficulty: '13.7' },
-    { id: '11097', name: 'ブレインジャックシンドローム', version: '舞萌 2021', difficulty: '13.3' },
-    { id: '11098', name: '共鳴', version: '舞萌 2021', difficulty: '13.2' },
-    { id: '11099', name: 'Ututu', version: '舞萌 2021', difficulty: '12.9' },
-    { id: '11163', name: 'REAL VOICE', version: '舞萌 2021', difficulty: '12.8' },
-    { id: '11162', name: 'ユメヒバナ', version: '舞萌 2021', difficulty: '13.4' },
-    { id: '11161', name: 'オリフィス', version: '舞萌 2021', difficulty: '12.9' },
-    { id: '11228', name: '星めぐり、果ての君へ。', version: '舞萌 2022', difficulty: '12.9' },
-    { id: '11229', name: 'スローアライズ', version: '舞萌 2022', difficulty: '12.8' },
-    { id: '11231', name: '生命不詳', version: '舞萌 2022', difficulty: '13.7' },
-    { id: '11739', name: '184 億回のマルチトニック', version: '舞萌 2025', difficulty: '14.1' },
-    { id: '11463', name: 'RIFFRAIN', version: '舞萌 2023', difficulty: '13.2' },
-    { id: '11464', name: 'Falling', version: '舞萌 2023', difficulty: '13.4' },
-    { id: '11465', name: 'ピリオドサイン', version: '舞萌 2023', difficulty: '13.5' },
-    { id: '11538', name: 'アンバークロニクル', version: '舞萌 2024', difficulty: '13.3' },
-    { id: '11539', name: 'リフヴェイン', version: '舞萌 2024', difficulty: '13.6' },
-    { id: '11541', name: '宵の鳥', version: '舞萌 2024', difficulty: '13.6' },
-    { id: '11620', name: 'フェイクフェイス・フェイルセイフ', version: '舞萌 2024', difficulty: '13.8' },
-    { id: '11622', name: 'シックスプラン', version: '舞萌 2024', difficulty: '13.2' },
-    { id: '11623', name: 'フタタビ', version: '舞萌 2024', difficulty: '13.4' },
-    { id: '11737', name: 'パラドクスイヴ', version: '舞萌 2025', difficulty: '13.5' },
-    { id: '11738', name: 'YKWTD', version: '舞萌 2025', difficulty: '13.8' },
-    { id: '11164', name: 'パラボラ', version: '舞萌 2021', difficulty: '13.8' },
-    { id: '11230', name: 'チエルカ／エソテリカ', version: '舞萌 2022', difficulty: '14.3' },
-    { id: '11466', name: '群青シグナル', version: '舞萌 2023', difficulty: '13.8' },
-    { id: '11540', name: 'Kairos', version: '舞萌 2024', difficulty: '13.5' },
-    { id: '11621', name: 'ふらふらふら、', version: '舞萌 2024', difficulty: '13.7' }
-];
+// 使用集中配置
+const { songs, gate } = SongsConfig.blue;
+const BLUE_GATE_TRACK1_POOL = gate.track1;
+const BLUE_GATE_TRACK2_POOL = gate.track2;
+const BLUE_GATE_TRACK3_FIXED = gate.track3;
 
 // 曲绘加载失败时显示的占位图（暂无曲绘）
 const noCoverSvg = "data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22%3E%3Crect fill=%22%23ddd%22 width=%2280%22 height=%2280%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-size=%2210%22%3E%E6%9A%82%E6%97%A0%E6%9B%B2%E7%BB%98%3C/text%3E%3C/svg%3E";
@@ -255,14 +187,22 @@ function saveProgress(progress) {
 let progress = loadProgress();
 let showRemainingOnly = false;
 
-// 渲染乐曲列表
+function updateSongDetailsInCard(container) {
+    if (typeof SongDisplay === 'undefined') return;
+    const songId = container?.dataset?.songId;
+    if (!songId) return;
+    const fallback = songs.find(s => s.id === songId) || BLUE_GATE_TRACK1_POOL.find(s => s.id === songId) || BLUE_GATE_TRACK2_POOL.find(s => s.id === songId) || { id: songId, name: '-' };
+    SongDisplay.getMusicDataThen(songId, fallback, (info) => {
+        const fields = SongDisplay.getDisplayFields();
+        container.innerHTML = SongDisplay.renderSongDetailsHtml(fields, info);
+    });
+}
+
 function renderSongs() {
     const songsList = document.getElementById('songs-list');
     songsList.innerHTML = '';
 
-    const filteredSongs = showRemainingOnly 
-        ? songs.filter(song => !progress[song.id])
-        : songs;
+    const filteredSongs = showRemainingOnly ? songs.filter(s => !progress[s.id]) : songs;
 
     if (filteredSongs.length === 0) {
         songsList.innerHTML = '<div class="empty-message">🎉 恭喜！所有曲目都已完成！</div>';
@@ -272,46 +212,37 @@ function renderSongs() {
     filteredSongs.forEach(song => {
         const songCard = document.createElement('div');
         songCard.className = `song-card ${progress[song.id] ? 'completed' : ''}`;
-        
         const coverUrl = `https://assets.awmc.cc/covers/${song.id}.png`;
-        
         songCard.innerHTML = `
-            <div class="song-cover">
-                <img src="${coverUrl}" 
-                     alt="暂无曲绘" 
-                     onerror="this.onerror=null;this.src='${noCoverSvg}'">
+            <div class="song-cover" data-song-id="${song.id}" title="双击/长按查看乐曲详情">
+                <img src="${coverUrl}" alt="暂无曲绘" onerror="this.onerror=null;this.src='${noCoverSvg}'">
             </div>
             <label class="song-checkbox">
-                <input type="checkbox" 
-                       data-song-id="${song.id}" 
-                       data-umami-event="checkbox-song-toggle-blue"
-                       data-umami-event-song-id="${song.id}"
-                       data-umami-event-song-name="${song.name.replace(/"/g, '&quot;')}"
-                       ${progress[song.id] ? 'checked' : ''}
-                       onchange="toggleSong('${song.id}')">
+                <input type="checkbox" data-song-id="${song.id}"
+                    data-umami-event="checkbox-song-toggle-blue"
+                    data-umami-event-song-id="${song.id}"
+                    data-umami-event-song-name="${(song.name || '').replace(/"/g, '&quot;')}"
+                    ${progress[song.id] ? 'checked' : ''} onchange="toggleSong('${song.id}')">
                 <span class="checkmark"></span>
             </label>
             <div class="song-info">
-                <div class="song-name">${song.name}</div>
-                <div class="song-details">
-                    <span class="song-id">ID: ${song.id}</span>
-                    <span class="song-version">${song.version}</span>
-                    <span class="song-difficulty">难度: ${song.difficulty}</span>
-                </div>
+                <div class="song-name">${(song.name || '-').replace(/</g, '&lt;')}</div>
+                <div class="song-details" data-song-id="${song.id}"></div>
             </div>
         `;
-        
         songsList.appendChild(songCard);
+        const detailsEl = songCard.querySelector('.song-details[data-song-id]');
+        if (detailsEl) updateSongDetailsInCard(detailsEl);
     });
 }
 
-// 切换乐曲完成状态
 function toggleSong(songId) {
     progress[songId] = !progress[songId];
     saveProgress(progress);
     updateStats();
     renderSongs();
     updateRemainingList();
+    if (typeof umami !== 'undefined') umami.track('checkbox-song-toggle-blue', { song_id: songId });
 }
 
 // 更新统计信息
@@ -351,7 +282,7 @@ function renderBlueGateChallengeRun() {
             const coverUrl = `https://assets.awmc.cc/covers/${s.id}.png`;
             return `
                 <div class="gate-song-chip expandable ${isSelected ? 'selected' : ''}" data-id="${s.id}">
-                    <div class="gate-chip-cover">
+                    <div class="gate-chip-cover" data-song-id="${s.id}" title="双击/长按查看乐曲详情">
                         <img src="${coverUrl}" alt="${s.name}" onerror="this.src='${noCoverSvg}'">
                     </div>
                     <span class="gate-chip-name">${s.name}</span>
@@ -364,7 +295,7 @@ function renderBlueGateChallengeRun() {
     track2El.innerHTML = renderTrack(BLUE_GATE_TRACK2_POOL, selected2);
     track3El.innerHTML = `
         <div class="gate-song-chip expandable selected" data-id="${BLUE_GATE_TRACK3_FIXED.id}">
-            <div class="gate-chip-cover">
+            <div class="gate-chip-cover" data-song-id="${BLUE_GATE_TRACK3_FIXED.id}" title="双击/长按查看乐曲详情">
                 <img src="https://assets.awmc.cc/covers/${BLUE_GATE_TRACK3_FIXED.id}.png" alt="${BLUE_GATE_TRACK3_FIXED.name}" onerror="this.src='${noCoverSvg}'">
             </div>
             <span class="gate-chip-name">${BLUE_GATE_TRACK3_FIXED.name}</span>
@@ -410,11 +341,10 @@ function initBlueGateChallengeSection() {
     });
 }
 
-// 更新未完成曲目列表
 function updateRemainingList() {
     const remainingList = document.getElementById('remaining-list');
-    const remainingSongs = songs.filter(song => !progress[song.id]);
-    
+    const remainingSongs = songs.filter(s => !progress[s.id]);
+
     if (remainingSongs.length === 0) {
         remainingList.innerHTML = '<div class="empty-message">🎉 所有曲目都已完成！您应该会在结算时看到钥匙。</div>';
         return;
@@ -422,15 +352,20 @@ function updateRemainingList() {
 
     remainingList.innerHTML = remainingSongs.map(song => `
         <div class="remaining-item">
-            <img src="https://assets.awmc.cc/covers/${song.id}.png" 
-                 alt="暂无曲绘" 
-                 class="remaining-cover"
-                 onerror="this.onerror=null;this.src='${noCoverSvg}'">
-            <div>
-                <strong>${song.name}</strong> (ID: ${song.id}) - ${song.version} - 难度: ${song.difficulty}
+            <div class="remaining-cover-wrap" data-song-id="${song.id}" title="双击/长按查看乐曲详情">
+                <img src="https://assets.awmc.cc/covers/${song.id}.png" alt="暂无曲绘" class="remaining-cover" onerror="this.onerror=null;this.src='${noCoverSvg}'">
             </div>
+            <div class="remaining-info" data-song-id="${song.id}"><strong>${(song.name || '').replace(/</g, '&lt;')}</strong></div>
         </div>
     `).join('');
+
+    remainingList.querySelectorAll('.remaining-info[data-song-id]').forEach(el => {
+        SongDisplay && SongDisplay.getMusicDataThen(el.dataset.songId, songs.find(s => s.id === el.dataset.songId), (info) => {
+            const fields = SongDisplay.getDisplayFields();
+            const tags = SongDisplay.renderSongDetailsHtml(fields, info);
+            el.innerHTML = `<strong>${(info.name || '').replace(/</g, '&lt;')}</strong> ${tags ? ' · ' + tags : ''}`;
+        });
+    });
 }
 
 // 仅显示未完成
@@ -590,3 +525,6 @@ initExpandClick();
 initScheduleView();
 updateCountdown();
 setInterval(updateCountdown, 1000);
+if (typeof SongDetail !== 'undefined') SongDetail.init();
+if (typeof SongDisplay !== 'undefined') SongDisplay.initDisplaySettings('blue');
+window.addEventListener('song-display-changed', () => { renderSongs(); updateRemainingList(); });

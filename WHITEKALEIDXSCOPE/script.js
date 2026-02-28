@@ -1,55 +1,9 @@
-// 白色之门 6首乐曲数据（作曲家含【奏音】或【大国奏音】）
-const songs = [
-    { id: '11102', name: '封焔の135秒', version: '舞萌 2021', difficulty: '14.8' },
-    { id: '11234', name: 'ほしぞらスペクタクル', version: '舞萌 2022', difficulty: '14.4' },
-    { id: '11300', name: 'U&iVERSE -銀河鸞翔-', version: '舞萌 2022', difficulty: '14.3' },
-    { id: '11529', name: 'ツムギボシ', version: '舞萌 2024', difficulty: '13.9' },
-    { id: '11542', name: 'ここからはじまるプロローグ。 (Kanon Remix)', version: '舞萌 2024', difficulty: '13.8' },
-    { id: '11612', name: 'Latent Kingdom', version: '舞萌 2024', difficulty: '14.9' }
-];
-
+// 使用集中配置
+const { songs, gate } = SongsConfig.white;
 const songsById = Object.fromEntries(songs.map(s => [s.id, s]));
-
-// 门中随机选曲：1曲目池、2曲目池、3曲目固定
-const GATE_TRACK1_POOL = [
-    { id: '11027', name: 'アポカリプスに反逆の焔を焚べろ' },
-    { id: '11101', name: 'GRÄNDIR' },
-    { id: '11103', name: '渦状銀河のシンフォニエッタ' },
-    { id: '11166', name: 'ワンダーシャッフェンの法則' },
-    { id: '11167', name: 'BIRTH' },
-    { id: '11236', name: 'Last Samurai' },
-    { id: '11237', name: '蒼穹舞楽' },
-    { id: '11301', name: '華の集落、秋のお届け' },
-    { id: '11303', name: '星詠みとデスペラード' },
-    { id: '11387', name: '星空パーティーチューン' },
-    { id: '11388', name: 'チューリングの跡' },
-    { id: '11386', name: 'Swift Swing' },
-    { id: '11467', name: 'Beat Opera op.1' },
-    { id: '11468', name: '星見草' },
-    { id: '11469', name: '"411Ψ892"' },
-    { id: '11682', name: 'Geranium' },
-    { id: '11683', name: 'The Cursed Doll' },
-    { id: '11684', name: 'RondeauX of RagnaroQ' },
-    { id: '11742', name: 'Ourania' },
-    { id: '11743', name: '天蓋' }
-];
-const GATE_TRACK2_POOL = [
-    { id: '11026', name: 'TEmPTaTiON' },
-    { id: '11102', name: '封焔の135秒' },
-    { id: '11165', name: 'Regulus' },
-    { id: '11238', name: 'AMABIE' },
-    { id: '11302', name: 'BLACK SWAN' },
-    { id: '11389', name: 'Sage' },
-    { id: '11470', name: '康莊大道' },
-    { id: '11685', name: 'ℝ∈Χ LUNATiCA' },
-    { id: '11744', name: 'Deicide' }
-];
-const GATE_TRACK3_FIXED = { id: '11745', name: '氷滅の135小節' };
-const gateChallengeById = Object.fromEntries([
-    ...GATE_TRACK1_POOL.map(s => [s.id, s]),
-    ...GATE_TRACK2_POOL.map(s => [s.id, s]),
-    [GATE_TRACK3_FIXED.id, GATE_TRACK3_FIXED]
-]);
+const GATE_TRACK1_POOL = gate.track1;
+const GATE_TRACK2_POOL = gate.track2;
+const GATE_TRACK3_FIXED = gate.track3;
 
 // 区域开放时间 2026/02/10 07:00:00 (UTC+8 北京时间)
 const OPEN_TIME = new Date('2026-02-10T07:00:00+08:00');
@@ -344,31 +298,29 @@ function renderSoloRun() {
         const coverUrl = `https://assets.awmc.cc/covers/${id}.png`;
         return `
             <div class="run-song-card ${done ? 'completed' : ''}" data-song-id="${id}" data-mode="solo">
-                <div class="song-cover">
-                    <img src="${coverUrl}" alt="${song.name}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'%3E%3Crect fill=\'%23ddd\' width=\'200\' height=\'200\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%23999\'%3E无曲绘%3C/text%3E%3C/svg%3E'">
+                <div class="song-cover" data-song-id="${id}" title="双击/长按查看乐曲详情">
+                    <img src="${coverUrl}" alt="${(song.name || '').replace(/"/g, '&quot;')}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'%3E%3Crect fill=\'%23ddd\' width=\'200\' height=\'200\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%23999\'%3E无曲绘%3C/text%3E%3C/svg%3E'">
                 </div>
                 <label class="song-checkbox">
-                    <input type="checkbox" ${done ? 'checked' : ''} data-song-id="${id}" data-mode="solo" data-umami-event="run-toggle-solo-white" data-umami-event-song-id="${id}" data-umami-event-song-name="${song.name.replace(/"/g, '&quot;')}">
+                    <input type="checkbox" ${done ? 'checked' : ''} data-song-id="${id}" data-mode="solo" data-umami-event="run-toggle-solo-white" data-umami-event-song-id="${id}" data-umami-event-song-name="${(song.name || '').replace(/"/g, '&quot;')}">
                     <span class="checkmark"></span>
                 </label>
                 <div class="song-info">
-                    <div class="song-name">${song.name}</div>
-                    <div class="song-details">
-                        <span>ID: ${id}</span>
-                        <span>${song.version}</span>
-                        <span>难度: ${song.difficulty}</span>
-                    </div>
+                    <div class="song-name">${(song.name || '-').replace(/</g, '&lt;')}</div>
+                    <div class="song-details" data-song-id="${id}"></div>
                     <button class="btn-remove" data-remove="solo" data-song-id="${id}" data-umami-event="run-remove-solo-white" data-umami-event-song-id="${id}" title="移除此曲目">×</button>
                 </div>
             </div>
         `;
     }).join('');
-    
+    list.querySelectorAll('.song-details[data-song-id]').forEach(el => {
+        updateWhiteSongDetails(el, el.dataset.songId, songsById[el.dataset.songId]);
+    });
     list.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-        cb.addEventListener('change', () => toggleRunSong('solo', cb.dataset.songId));
+        cb.addEventListener('change', () => { toggleRunSong('solo', cb.dataset.songId); if (typeof umami !== 'undefined') umami.track('run-toggle-solo-white', { song_id: cb.dataset.songId }); });
     });
     list.querySelectorAll('[data-remove="solo"]').forEach(btn => {
-        btn.addEventListener('click', () => removeFromRun('solo', btn.dataset.songId));
+        btn.addEventListener('click', () => { removeFromRun('solo', btn.dataset.songId); if (typeof umami !== 'undefined') umami.track('run-remove-solo-white', { song_id: btn.dataset.songId }); });
     });
 }
 
@@ -395,31 +347,29 @@ function renderMultiRun() {
         const coverUrl = `https://assets.awmc.cc/covers/${id}.png`;
         return `
             <div class="run-song-card ${done ? 'completed' : ''}" data-song-id="${id}" data-mode="multi">
-                <div class="song-cover">
-                    <img src="${coverUrl}" alt="${song.name}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'%3E%3Crect fill=\'%23ddd\' width=\'200\' height=\'200\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%23999\'%3E无曲绘%3C/text%3E%3C/svg%3E'">
+                <div class="song-cover" data-song-id="${id}" title="双击/长按查看乐曲详情">
+                    <img src="${coverUrl}" alt="${(song.name || '').replace(/"/g, '&quot;')}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'%3E%3Crect fill=\'%23ddd\' width=\'200\' height=\'200\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%23999\'%3E无曲绘%3C/text%3E%3C/svg%3E'">
                 </div>
                 <label class="song-checkbox">
-                    <input type="checkbox" ${done ? 'checked' : ''} data-song-id="${id}" data-mode="multi" data-umami-event="run-toggle-multi-white" data-umami-event-song-id="${id}" data-umami-event-song-name="${song.name.replace(/"/g, '&quot;')}">
+                    <input type="checkbox" ${done ? 'checked' : ''} data-song-id="${id}" data-mode="multi" data-umami-event="run-toggle-multi-white" data-umami-event-song-id="${id}" data-umami-event-song-name="${(song.name || '').replace(/"/g, '&quot;')}">
                     <span class="checkmark"></span>
                 </label>
                 <div class="song-info">
-                    <div class="song-name">${song.name}</div>
-                    <div class="song-details">
-                        <span>ID: ${id}</span>
-                        <span>${song.version}</span>
-                        <span>难度: ${song.difficulty}</span>
-                    </div>
+                    <div class="song-name">${(song.name || '-').replace(/</g, '&lt;')}</div>
+                    <div class="song-details" data-song-id="${id}"></div>
                     <button class="btn-remove" data-remove="multi" data-song-id="${id}" data-umami-event="run-remove-multi-white" data-umami-event-song-id="${id}" title="移除此曲目">×</button>
                 </div>
             </div>
         `;
     }).join('');
-    
+    list.querySelectorAll('.song-details[data-song-id]').forEach(el => {
+        updateWhiteSongDetails(el, el.dataset.songId, songsById[el.dataset.songId]);
+    });
     list.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-        cb.addEventListener('change', () => toggleRunSong('multi', cb.dataset.songId));
+        cb.addEventListener('change', () => { toggleRunSong('multi', cb.dataset.songId); if (typeof umami !== 'undefined') umami.track('run-toggle-multi-white', { song_id: cb.dataset.songId }); });
     });
     list.querySelectorAll('[data-remove="multi"]').forEach(btn => {
-        btn.addEventListener('click', () => removeFromRun('multi', btn.dataset.songId));
+        btn.addEventListener('click', () => { removeFromRun('multi', btn.dataset.songId); if (typeof umami !== 'undefined') umami.track('run-remove-multi-white', { song_id: btn.dataset.songId }); });
     });
 }
 
@@ -509,7 +459,7 @@ function renderGateChallengeRun() {
             const coverUrl = `https://assets.awmc.cc/covers/${s.id}.png`;
             return `
                 <div class="gate-song-chip expandable ${isSelected ? 'selected' : ''}" data-id="${s.id}">
-                    <div class="gate-chip-cover">
+                    <div class="gate-chip-cover" data-song-id="${s.id}" title="双击/长按查看乐曲详情">
                         <img src="${coverUrl}" alt="${s.name}" onerror="this.src='${noCoverSvg}'">
                     </div>
                     <span class="gate-chip-name">${s.name}</span>
@@ -522,7 +472,7 @@ function renderGateChallengeRun() {
     track2El.innerHTML = renderTrack(GATE_TRACK2_POOL, selected2);
     track3El.innerHTML = `
         <div class="gate-song-chip expandable selected" data-id="${GATE_TRACK3_FIXED.id}">
-            <div class="gate-chip-cover">
+            <div class="gate-chip-cover" data-song-id="${GATE_TRACK3_FIXED.id}" title="双击/长按查看乐曲详情">
                 <img src="https://assets.awmc.cc/covers/${GATE_TRACK3_FIXED.id}.png" alt="${GATE_TRACK3_FIXED.name}" onerror="this.src='${noCoverSvg}'">
             </div>
             <span class="gate-chip-name">${GATE_TRACK3_FIXED.name}</span>
@@ -568,7 +518,14 @@ function initGateChallengeSection() {
     });
 }
 
-// 从单人/多人列表中移除曲目
+function updateWhiteSongDetails(container, songId, fallback) {
+    if (typeof SongDisplay === 'undefined') return;
+    SongDisplay.getMusicDataThen(songId, fallback, (info) => {
+        const fields = SongDisplay.getDisplayFields();
+        container.innerHTML = SongDisplay.renderSongDetailsHtml(fields, info);
+    });
+}
+
 function removeFromRun(mode, songId) {
     progress[mode].run = progress[mode].run.filter(id => id !== songId);
     delete progress[mode].completed[songId];
@@ -587,30 +544,28 @@ function renderSongsPool() {
         const coverUrl = `https://assets.awmc.cc/covers/${song.id}.png`;
         return `
             <div class="pool-song-card" data-song-id="${song.id}">
-                <div class="song-cover">
-                    <img src="${coverUrl}" alt="${song.name}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'%3E%3Crect fill=\'%23ddd\' width=\'200\' height=\'200\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%23999\'%3E无曲绘%3C/text%3E%3C/svg%3E'">
+                <div class="song-cover" data-song-id="${song.id}" title="双击/长按查看乐曲详情">
+                    <img src="${coverUrl}" alt="${(song.name || '').replace(/"/g, '&quot;')}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'200\'%3E%3Crect fill=\'%23ddd\' width=\'200\' height=\'200\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%23999\'%3E无曲绘%3C/text%3E%3C/svg%3E'">
                 </div>
                 <div class="song-info">
-                    <div class="song-name">${song.name}</div>
-                    <div class="song-details">
-                        <span>ID: ${song.id}</span>
-                        <span>${song.version}</span>
-                        <span>难度: ${song.difficulty}</span>
-                    </div>
+                    <div class="song-name">${(song.name || '-').replace(/</g, '&lt;')}</div>
+                    <div class="song-details" data-song-id="${song.id}"></div>
                     <div class="pool-actions">
-                        <button class="btn btn-small btn-solo" data-add-solo="${song.id}" data-umami-event="pool-add-solo-white" data-umami-event-song-id="${song.id}" data-umami-event-song-name="${song.name.replace(/"/g, '&quot;')}">添加到单人</button>
-                        <button class="btn btn-small btn-multi" data-add-multi="${song.id}" data-umami-event="pool-add-multi-white" data-umami-event-song-id="${song.id}" data-umami-event-song-name="${song.name.replace(/"/g, '&quot;')}">添加到多人</button>
+                        <button class="btn btn-small btn-solo" data-add-solo="${song.id}" data-umami-event="pool-add-solo-white" data-umami-event-song-id="${song.id}" data-umami-event-song-name="${(song.name || '').replace(/"/g, '&quot;')}">添加到单人</button>
+                        <button class="btn btn-small btn-multi" data-add-multi="${song.id}" data-umami-event="pool-add-multi-white" data-umami-event-song-id="${song.id}" data-umami-event-song-name="${(song.name || '').replace(/"/g, '&quot;')}">添加到多人</button>
                     </div>
                 </div>
             </div>
         `;
     }).join('');
-    
+    list.querySelectorAll('.song-details[data-song-id]').forEach(el => {
+        updateWhiteSongDetails(el, el.dataset.songId, songs.find(s => s.id === el.dataset.songId));
+    });
     list.querySelectorAll('[data-add-solo]').forEach(btn => {
-        btn.addEventListener('click', () => addToSolo(btn.dataset.addSolo));
+        btn.addEventListener('click', () => { addToSolo(btn.dataset.addSolo); if (typeof umami !== 'undefined') umami.track('pool-add-solo-white', { song_id: btn.dataset.addSolo }); });
     });
     list.querySelectorAll('[data-add-multi]').forEach(btn => {
-        btn.addEventListener('click', () => addToMulti(btn.dataset.addMulti));
+        btn.addEventListener('click', () => { addToMulti(btn.dataset.addMulti); if (typeof umami !== 'undefined') umami.track('pool-add-multi-white', { song_id: btn.dataset.addMulti }); });
     });
 }
 
@@ -790,4 +745,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initExpandClick();
     updateCompletionStatus();
     initEventListeners();
+    if (typeof SongDetail !== 'undefined') SongDetail.init();
+    if (typeof SongDisplay !== 'undefined') SongDisplay.initDisplaySettings('white');
+    window.addEventListener('song-display-changed', () => { renderSoloRun(); renderMultiRun(); renderSongsPool(); });
 });
