@@ -7,9 +7,9 @@ const songs = [
     { id: '11300', name: 'U&iVERSE -銀河鸞翔-', version: '舞萌 2023', difficulty: '14.3' },
     { id: '11374', name: 'GIGANTØMAKHIA', version: '舞萌 2023', difficulty: '14.7' },
     { id: '11458', name: 'Rising on the horizon', version: '舞萌 2024', difficulty: '14.4' },
-    { id: '11523', name: 'ViRTUS', version: '舞萌 2024', difficulty: '14.6' },
-    { id: '11619', name: 'KHYMΞXΛ', version: '舞萌 2025', difficulty: '14.7' },
-    { id: '11663', name: '系ぎて', version: '舞萌 2025', difficulty: '13.8 / 14.7 / 15.0' },
+    { id: '11523', name: 'ViRTUS', version: '舞萌 2023', difficulty: '14.6' },
+    { id: '11619', name: 'KHYMΞXΛ', version: '舞萌 2024', difficulty: '14.7' },
+    { id: '11663', name: '系ぎて', version: '舞萌 2024', difficulty: '13.8 / 14.7 / 15.0' },
     { id: '11746', name: 'Divide et impera!', version: '舞萌 2025', difficulty: '14.8' }
 ];
 
