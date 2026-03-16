@@ -134,6 +134,93 @@ header h1 {
     }
 }
 
+/* 重要提示：设置旅行伙伴队长 */
+.background-notice {
+    margin-bottom: 25px;
+    padding: 25px;
+    background: #fff3cd;
+    border: 3px solid #ffc107;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.notice-title {
+    font-size: 1.4em;
+    margin-bottom: 12px;
+    color: #856404;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.notice-content {
+    font-size: 1.15em;
+    margin-bottom: 0;
+    color: #856404;
+    line-height: 1.6;
+    transition: color 0.3s ease;
+}
+
+.notice-content strong {
+    color: #664d03;
+    text-decoration: underline;
+}
+
+body.theme-purple .partner-notice {
+    background: linear-gradient(135deg, #fff7ed 0%, #fef3c7 100%);
+    border-color: #f59e0b;
+    box-shadow: 0 4px 18px rgba(245, 158, 11, 0.22);
+}
+
+body.theme-purple .partner-notice .notice-title {
+    color: #92400e;
+}
+
+body.theme-purple .partner-notice .notice-content {
+    color: #78350f;
+}
+
+body.theme-purple .partner-notice .notice-content strong {
+    color: #7c2d12;
+}
+
+@media (prefers-color-scheme: dark) {
+    .background-notice {
+        background: #5a4a2d;
+        border-color: #8b6914;
+    }
+
+    .notice-title {
+        color: #ffc107;
+    }
+
+    .notice-content {
+        color: #e0d090;
+    }
+
+    .notice-content strong {
+        color: #ffc107;
+    }
+
+    body.theme-purple .partner-notice {
+        background: linear-gradient(135deg, #4c1d06 0%, #78350f 100%);
+        border-color: #f59e0b;
+        box-shadow: 0 4px 18px rgba(245, 158, 11, 0.28);
+    }
+
+    body.theme-purple .partner-notice .notice-title {
+        color: #fbbf24;
+    }
+
+    body.theme-purple .partner-notice .notice-content {
+        color: #fde68a;
+    }
+
+    body.theme-purple .partner-notice .notice-content strong {
+        color: #fcd34d;
+    }
+}
+
 /* countdown-section (open time only) */
 .countdown-section {
     margin-bottom: 35px;
@@ -237,6 +324,77 @@ body.theme-purple .countdown-section {
 
 @media (prefers-color-scheme: dark) {
     .countdown-status {
+        color: #a78bfa;
+    }
+}
+
+/* 重要提示：设置背景/伙伴 */
+.background-notice {
+    margin-bottom: 25px;
+    padding: 25px;
+    background: #f3e8ff;
+    border: 3px solid #7c3aed;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+    .background-notice {
+        background: #2e1065;
+        border-color: #5b21b6;
+    }
+}
+
+.notice-title {
+    font-size: 1.4em;
+    margin-bottom: 12px;
+    color: #6d28d9;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+    .notice-title {
+        color: #a78bfa;
+    }
+}
+
+.notice-content {
+    font-size: 1.15em;
+    margin-bottom: 10px;
+    color: #5b21b6;
+    line-height: 1.6;
+    transition: color 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+    .notice-content {
+        color: #ddd6fe;
+    }
+}
+
+.notice-content strong {
+    color: #4c1d95;
+    text-decoration: underline;
+}
+
+@media (prefers-color-scheme: dark) {
+    .notice-content strong {
+        color: #c4b5fd;
+    }
+}
+
+.notice-sub {
+    font-size: 0.95em;
+    color: #6d28d9;
+    margin: 0;
+    opacity: 0.9;
+    transition: color 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+    .notice-sub {
         color: #a78bfa;
     }
 }
