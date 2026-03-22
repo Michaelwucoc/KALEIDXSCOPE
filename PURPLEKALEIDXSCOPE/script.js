@@ -145,6 +145,39 @@ function randomPickPurple(n) {
     return shuffled.slice(0, n).map(s => s.id);
 }
 
+// 检查模式是否完成
+function isSoloComplete() {
+    const run = progress.solo.run;
+    if (run.length !== 3) return false;
+    return run.every(id => progress.solo.completed[id]);
+}
+
+function isMultiComplete() {
+    const run = progress.multi.run;
+    if (run.length !== 4) return false;
+    return run.every(id => progress.multi.completed[id]);
+}
+
+// 更新完成状态显示
+function updateCompletionStatus() {
+    const msgEl = document.getElementById('completion-message');
+    if (!msgEl) return;
+
+    const soloDone = isSoloComplete();
+    const multiDone = isMultiComplete();
+
+    if (soloDone || multiDone) {
+        const parts = [];
+        if (soloDone) parts.push('单人游戏');
+        if (multiDone) parts.push('双人游戏');
+        msgEl.textContent = `🎉 恭喜！已完成：${parts.join('、')}，解锁条件达成！`;
+        msgEl.className = 'completion-message done';
+    } else {
+        msgEl.textContent = '完成单人游戏（3首）或双人游戏（4首）即可达成解锁条件';
+        msgEl.className = 'completion-message';
+    }
+}
+
 // 随机推荐 - 单人
 function doSoloRandom() {
     if (!progress.solo) progress.solo = { run: [], completed: {} };
@@ -152,6 +185,7 @@ function doSoloRandom() {
     progress.solo.completed = {};
     saveProgress(progress);
     renderSoloRun();
+    updateCompletionStatus();
 }
 
 // 随机推荐 - 双人
@@ -161,6 +195,7 @@ function doMultiRandom() {
     progress.multi.completed = {};
     saveProgress(progress);
     renderMultiRun();
+    updateCompletionStatus();
 }
 
 // 添加到单人（最多3首，不可重复）
@@ -178,6 +213,7 @@ function addToSolo(songId) {
     progress.solo.run.push(songId);
     saveProgress(progress);
     renderSoloRun();
+    updateCompletionStatus();
 }
 
 // 添加到双人（最多4首，不可重复）
@@ -195,6 +231,7 @@ function addToMulti(songId) {
     progress.multi.run.push(songId);
     saveProgress(progress);
     renderMultiRun();
+    updateCompletionStatus();
 }
 
 function updatePurpleSongDetails(container, songId, fallback) {
@@ -212,6 +249,19 @@ function removeFromRun(mode, songId) {
     saveProgress(progress);
     if (mode === 'solo') renderSoloRun();
     else renderMultiRun();
+    updateCompletionStatus();
+}
+
+function toggleRunSong(mode, songId) {
+    if (!progress[mode].completed[songId]) {
+        progress[mode].completed[songId] = true;
+    } else {
+        progress[mode].completed[songId] = false;
+    }
+    saveProgress(progress);
+    renderSoloRun();
+    renderMultiRun();
+    updateCompletionStatus();
 }
 
 // 渲染单人游玩曲目
@@ -228,12 +278,16 @@ function renderSoloRun() {
     placeholder.style.display = 'none';
     list.innerHTML = run.map(id => {
         const song = songsById[id] || { id, name: '-' };
+        const done = (progress.solo && progress.solo.completed && progress.solo.completed[id]) || false;
         const coverUrl = `https://assets.awmc.cc/covers/${id}.png`;
         return `
-            <div class="run-song-card" data-song-id="${id}" data-mode="solo">
+            <div class="run-song-card ${done ? 'completed' : ''}" data-song-id="${id}" data-mode="solo">
                 <div class="song-cover" data-song-id="${id}" title="双击/长按查看乐曲详情">
                     <img src="${coverUrl}" alt="${(song.name || '').replace(/"/g, '&quot;')}" onerror="this.src='${noCoverSvg}'">
                 </div>
+                <label class="song-checkbox">
+                    <input type="checkbox" ${done ? 'checked' : ''} data-song-id="${id}" data-mode="solo" data-umami-event="run-toggle-solo-purple" data-umami-event-song-id="${id}">
+                </label>
                 <div class="song-info">
                     <div class="song-name">${(song.name || '-').replace(/</g, '&lt;')}</div>
                     <div class="song-details" data-song-id="${id}"></div>
@@ -244,6 +298,9 @@ function renderSoloRun() {
     }).join('');
     list.querySelectorAll('.song-details[data-song-id]').forEach(el => {
         updatePurpleSongDetails(el, el.dataset.songId, songsById[el.dataset.songId]);
+    });
+    list.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.addEventListener('change', () => toggleRunSong('solo', cb.dataset.songId));
     });
     list.querySelectorAll('[data-remove="solo"]').forEach(btn => {
         btn.addEventListener('click', () => removeFromRun('solo', btn.dataset.songId));
@@ -264,12 +321,16 @@ function renderMultiRun() {
     placeholder.style.display = 'none';
     list.innerHTML = run.map(id => {
         const song = songsById[id] || { id, name: '-' };
+        const done = (progress.multi && progress.multi.completed && progress.multi.completed[id]) || false;
         const coverUrl = `https://assets.awmc.cc/covers/${id}.png`;
         return `
-            <div class="run-song-card" data-song-id="${id}" data-mode="multi">
+            <div class="run-song-card ${done ? 'completed' : ''}" data-song-id="${id}" data-mode="multi">
                 <div class="song-cover" data-song-id="${id}" title="双击/长按查看乐曲详情">
                     <img src="${coverUrl}" alt="${(song.name || '').replace(/"/g, '&quot;')}" onerror="this.src='${noCoverSvg}'">
                 </div>
+                <label class="song-checkbox">
+                    <input type="checkbox" ${done ? 'checked' : ''} data-song-id="${id}" data-mode="multi" data-umami-event="run-toggle-multi-purple" data-umami-event-song-id="${id}">
+                </label>
                 <div class="song-info">
                     <div class="song-name">${(song.name || '-').replace(/</g, '&lt;')}</div>
                     <div class="song-details" data-song-id="${id}"></div>
@@ -280,6 +341,9 @@ function renderMultiRun() {
     }).join('');
     list.querySelectorAll('.song-details[data-song-id]').forEach(el => {
         updatePurpleSongDetails(el, el.dataset.songId, songsById[el.dataset.songId]);
+    });
+    list.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.addEventListener('change', () => toggleRunSong('multi', cb.dataset.songId));
     });
     list.querySelectorAll('[data-remove="multi"]').forEach(btn => {
         btn.addEventListener('click', () => removeFromRun('multi', btn.dataset.songId));
@@ -337,6 +401,7 @@ document.getElementById('reset').addEventListener('click', () => {
         saveProgress(progress);
         renderSoloRun();
         renderMultiRun();
+        updateCompletionStatus();
     }
 });
 
@@ -401,6 +466,7 @@ document.getElementById('import-confirm').addEventListener('click', () => {
             saveProgress(progress);
             renderSoloRun();
             renderMultiRun();
+            updateCompletionStatus();
             document.getElementById('import-modal').style.display = 'none';
             alert('导入成功！');
         }
@@ -418,6 +484,7 @@ document.getElementById('solo-clear')?.addEventListener('click', () => {
         progress.solo.completed = {};
         saveProgress(progress);
         renderSoloRun();
+        updateCompletionStatus();
     }
 });
 document.getElementById('multi-clear')?.addEventListener('click', () => {
@@ -426,6 +493,7 @@ document.getElementById('multi-clear')?.addEventListener('click', () => {
         progress.multi.completed = {};
         saveProgress(progress);
         renderMultiRun();
+        updateCompletionStatus();
     }
 });
 
@@ -446,6 +514,30 @@ document.getElementById('gate-random').addEventListener('click', () => {
     }
 });
 
+function initDiagramZoom() {
+    const img = document.getElementById('zoomable-diagram');
+    const modal = document.getElementById('diagram-modal');
+    const closeBtn = document.getElementById('diagram-modal-close');
+
+    if (!img || !modal) return;
+
+    img.addEventListener('click', () => {
+        modal.style.display = 'flex';
+        if (typeof umami !== 'undefined') umami.track('diagram-zoom-open');
+    });
+
+    const closeModal = () => {
+        modal.style.display = 'none';
+    };
+
+    closeBtn?.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal || e.target.classList.contains('diagram-modal-body')) {
+            closeModal();
+        }
+    });
+}
+
 updateCountdown();
 setInterval(updateCountdown, 1000);
 renderSoloRun();
@@ -454,6 +546,8 @@ renderSongsPool();
 renderPurpleGateChallengeRun();
 initPurpleGateChallengeSection();
 initExpandClick();
+initDiagramZoom();
+updateCompletionStatus();
 if (typeof SongDetail !== 'undefined') SongDetail.init();
 if (typeof SongDisplay !== 'undefined') SongDisplay.initDisplaySettings('purple');
 window.addEventListener('song-display-changed', () => { renderSoloRun(); renderMultiRun(); renderSongsPool(); });

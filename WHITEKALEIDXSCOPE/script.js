@@ -730,6 +730,33 @@ function initEventListeners() {
     }
 }
 
+function initDiagramZoom() {
+    const diagram = document.getElementById('zoomable-diagram');
+    const modal = document.getElementById('diagram-modal');
+    const zoomedImg = document.getElementById('zoomed-diagram');
+    const closeBtn = document.getElementById('diagram-modal-close');
+
+    if (!diagram || !modal || !zoomedImg) return;
+
+    diagram.addEventListener('click', () => {
+        zoomedImg.src = diagram.src;
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // 禁止背景滚动
+    });
+
+    const closeModal = () => {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    };
+
+    closeBtn?.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal || e.target === zoomedImg || e.target === closeBtn) {
+            closeModal();
+        }
+    });
+}
+
 // 初始化
 document.addEventListener('DOMContentLoaded', () => {
     updateCountdown();
@@ -745,6 +772,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initExpandClick();
     updateCompletionStatus();
     initEventListeners();
+    initDiagramZoom();
     if (typeof SongDetail !== 'undefined') SongDetail.init();
     if (typeof SongDisplay !== 'undefined') SongDisplay.initDisplaySettings('white');
     window.addEventListener('song-display-changed', () => { renderSoloRun(); renderMultiRun(); renderSongsPool(); });

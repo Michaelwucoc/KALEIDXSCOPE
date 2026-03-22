@@ -166,6 +166,65 @@ header h1 {
     text-decoration: underline;
 }
 
+.notice-diagram {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.diagram-img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    cursor: zoom-in;
+    transition: transform 0.2s ease;
+}
+
+.diagram-img:hover {
+    transform: scale(1.02);
+}
+
+.diagram-modal-content {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    width: auto !important;
+    max-width: 95vw !important;
+    padding: 0 !important;
+    position: relative;
+}
+
+.diagram-modal-body {
+    text-align: center;
+    padding: 0 !important;
+}
+
+.enlarged-diagram {
+    max-width: 100%;
+    max-height: 90vh;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+    object-fit: contain;
+}
+
+#diagram-modal-close {
+    position: absolute;
+    right: -20px;
+    top: -40px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+@media (max-width: 768px) {
+    #diagram-modal-close {
+        right: 0;
+        top: -50px;
+    }
+}
+
 body.theme-purple .partner-notice {
     background: linear-gradient(135deg, #fff7ed 0%, #fef3c7 100%);
     border-color: #f59e0b;
@@ -866,8 +925,14 @@ body.theme-purple .mode-section {
 
 .run-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 15px;
+}
+
+@media (max-width: 600px) {
+    .run-list {
+        grid-template-columns: 1fr;
+    }
 }
 
 .run-song-card {
@@ -876,9 +941,54 @@ body.theme-purple .mode-section {
     border-radius: 12px;
     padding: 15px;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 15px;
     transition: all 0.3s;
+    position: relative;
+}
+
+.run-song-card.completed {
+    background: #f0fdf4;
+    border-color: #22c55e;
+}
+
+body.theme-purple .run-song-card.completed {
+    background: rgba(139, 92, 246, 0.1);
+    border-color: #8b5cf6;
+}
+
+@media (prefers-color-scheme: dark) {
+    .run-song-card.completed {
+        background: #064e3b;
+        border-color: #059669;
+    }
+    body.theme-purple .run-song-card.completed {
+        background: rgba(139, 92, 246, 0.2);
+        border-color: #a78bfa;
+    }
+}
+
+.song-checkbox {
+    position: relative;
+    cursor: pointer;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.song-checkbox input[type="checkbox"] {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    accent-color: #7c3aed;
+}
+
+.run-song-card.completed .song-name {
+    text-decoration: line-through;
+    opacity: 0.7;
 }
 
 body.theme-purple .run-song-card {
@@ -917,6 +1027,7 @@ body.theme-purple .run-song-card {
 .run-song-card .song-info {
     flex: 1;
     position: relative;
+    padding-right: 35px;
 }
 
 .run-song-card .song-info .song-name {
@@ -964,7 +1075,56 @@ body.theme-purple .run-song-card .song-info .song-details {
     background: #c82333;
 }
 
-/* 曲目池区域 */
+.completion-status {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.completion-message {
+    padding: 15px;
+    border-radius: 10px;
+    background: #f8f9fa;
+    color: #666;
+    font-weight: 500;
+    border: 1px solid #e9ecef;
+}
+
+.completion-message.done {
+    background: #d1fae5;
+    color: #065f46;
+    border-color: #a7f3d0;
+    animation: bounceIn 0.5s ease;
+}
+
+body.theme-purple .completion-message.done {
+    background: #ede9fe;
+    color: #5b21b6;
+    border-color: #ddd6fe;
+}
+
+@media (prefers-color-scheme: dark) {
+    .completion-message {
+        background: #2d2d2d;
+        color: #a0a0a0;
+        border-color: #444;
+    }
+    .completion-message.done {
+        background: #064e3b;
+        color: #34d399;
+        border-color: #065f46;
+    }
+    body.theme-purple .completion-message.done {
+        background: #2e1065;
+        color: #c4b5fd;
+        border-color: #4c1d95;
+    }
+}
+
+@keyframes bounceIn {
+    0% { transform: scale(0.9); opacity: 0; }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+}
 .songs-pool-section {
     margin-top: 40px;
     padding-top: 30px;

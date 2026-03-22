@@ -50,6 +50,20 @@
         <div class="background-notice">
             <h2 class="notice-title">⚠️ 重要：设置旅行伙伴</h2>
             <p class="notice-content"><strong>必须将旅行伙伴队长设置为 BLACK ROSE 区域的アウル或其任意变种</strong>,否则后续游玩无效！</p>
+            <p class="notice-content"><i>感谢M1RV供图 (点击图片放大)</i></p>
+            <div class="notice-diagram">
+                <img src="https://assets.awmc.cc/sample/blackrose.png" alt="Black Rose 区域设置示意图" class="diagram-img" id="zoomable-diagram">
+            </div>
+        </div>
+
+        <!-- 图片放大模态框 -->
+        <div id="diagram-modal" class="modal diagram-modal" style="display: none;">
+            <div class="modal-content diagram-modal-content">
+                <span class="modal-close" id="diagram-modal-close">&times;</span>
+                <div class="modal-body diagram-modal-body">
+                    <img src="https://assets.awmc.cc/sample/blackrose.png" alt="Black Rose 区域设置示意图" class="enlarged-diagram">
+                </div>
+            </div>
         </div>
 
         <!-- 解锁说明 -->
@@ -102,6 +116,11 @@
                     <div id="import-error" class="error-message" style="display: none;"></div>
                 </div>
             </div>
+        </div>
+
+        <!-- 完成状态 -->
+        <div class="completion-status" id="completion-status">
+            <p class="completion-message" id="completion-message"></p>
         </div>
 
         <!-- 单人游戏 -->

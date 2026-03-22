@@ -287,6 +287,33 @@ window.addEventListener('song-display-changed', () => {
     updateRemainingList();
 });
 
+function initDiagramZoom() {
+    const diagram = document.getElementById('zoomable-diagram');
+    const modal = document.getElementById('diagram-modal');
+    const zoomedImg = document.getElementById('zoomed-diagram');
+    const closeBtn = document.getElementById('diagram-modal-close');
+
+    if (!diagram || !modal || !zoomedImg) return;
+
+    diagram.addEventListener('click', () => {
+        zoomedImg.src = diagram.src;
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // 禁止背景滚动
+    });
+
+    const closeModal = () => {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    };
+
+    closeBtn?.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal || e.target === zoomedImg || e.target === closeBtn) {
+            closeModal();
+        }
+    });
+}
+
 updateStats();
 renderSongs();
 updateRemainingList();
@@ -294,5 +321,6 @@ renderBlackGateChallengeRun();
 initBlackThemeToggle();
 initExpandClick();
 initBlackGateChallengeSection();
+initDiagramZoom();
 if (typeof SongDetail !== 'undefined') SongDetail.init();
 if (typeof SongDisplay !== 'undefined') SongDisplay.initDisplaySettings('black');
