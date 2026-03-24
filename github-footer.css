@@ -68,12 +68,19 @@
     fill: #12b7f5;
 }
 
+.kook-footer-link svg {
+    fill: #5865f2;
+}
+
 @media (prefers-color-scheme: dark) {
     .github-footer-link svg {
         fill: #e0e0e0;
     }
     .qq-footer-link svg {
         fill: #12b7f5;
+    }
+    .kook-footer-link svg {
+        fill: #8ea1ff;
     }
 }
 
@@ -100,4 +107,8 @@ body.theme-black .github-footer-link svg {
 
 body.theme-black .qq-footer-link svg {
     fill: #12b7f5;
+}
+
+body.theme-black .kook-footer-link svg {
+    fill: #5865f2;
 }
