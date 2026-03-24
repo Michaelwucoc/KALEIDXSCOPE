@@ -1297,14 +1297,14 @@ body.theme-purple .pool-song-card .song-details {
 
 .gate-challenge-section--purple .gate-song-chip.selected {
     border-color: #7c3aed;
-    background: rgba(124, 58, 237, 0.2);
+    background: white;
     box-shadow: 0 0 12px rgba(124, 58, 237, 0.45);
 }
 
 @media (prefers-color-scheme: dark) {
     .gate-challenge-section--purple .gate-song-chip.selected {
         border-color: #7c3aed;
-        background: rgba(124, 58, 237, 0.25);
+        background: #3d3d3d;
         box-shadow: 0 0 12px rgba(124, 58, 237, 0.5);
     }
 }
@@ -1423,7 +1423,7 @@ body.theme-purple .pool-song-card .song-details {
     padding: 8px;
     border-radius: 10px;
     background: #e9ecef;
-    border: 3px solid transparent;
+    border: 3px solid #dee2e6;
     transition: width 0.2s, max-width 0.2s, box-shadow 0.2s;
     position: relative;
     cursor: pointer;

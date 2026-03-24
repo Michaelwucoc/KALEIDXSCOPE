@@ -136,6 +136,37 @@ body.theme-black .gate-challenge-desc {
     line-height: 1.5;
 }
 
+body.theme-black .gate-challenge-title {
+    color: #1a1a1a;
+}
+
+body.theme-black .gate-challenge-toggle {
+    background: #f8f9fa;
+    border-color: #dee2e6;
+    color: #495057;
+}
+
+body.theme-black .gate-challenge-toggle:hover {
+    background: #e9ecef;
+    border-color: #ced4da;
+    color: #212529;
+}
+
+body.theme-black .gate-challenge-body {
+    border-top-color: #dee2e6;
+}
+
+body.theme-black .gate-song-chip {
+    background: #e9ecef;
+    border-color: #dee2e6;
+}
+
+body.theme-black .gate-song-chip.selected {
+    background: white;
+    border-color: #4a6a8a;
+    box-shadow: 0 0 12px rgba(74, 106, 138, 0.4);
+}
+
 body.theme-black .gate-track-title,
 body.theme-black .gate-song-chip.selected .gate-chip-name,
 body.theme-black .reference-block-title {
