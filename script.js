@@ -1,7 +1,7 @@
 // 主页交互脚本
 
 // 紫色之门开放时间 2026/03/25 10:00:00 (UTC+8)
-const PURPLE_OPEN_TIME = new Date('2026-03-25T10:00:00+08:00');
+const PURPLE_OPEN_TIME = new Date('2026-03-25T00:00:00+08:00');
 const PURPLE_REVEAL_CLICKS = 7;
 
 // 黑色之门：区域开放时间待定，需连续点击 14 次解锁
