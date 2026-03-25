@@ -1923,3 +1923,417 @@ body.theme-purple .modal-content {
         min-width: 50px;
     }
 }
+
+/* 紫门时间表（与白门/青门相同结构） */
+.schedule-section {
+    margin-bottom: 35px;
+    padding: 25px;
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 15px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+    .schedule-section {
+        background: #4a4a4a;
+        border-color: #5a5a5a;
+    }
+}
+
+.schedule-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.schedule-header h2 {
+    font-size: 1.4em;
+    margin: 0;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+    .schedule-header h2 {
+        color: #e0e0e0;
+    }
+}
+
+.schedule-section .view-toggle {
+    display: flex;
+    gap: 8px;
+}
+
+.schedule-section .toggle-btn {
+    padding: 8px 16px;
+    border: 2px solid #e9ecef;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95em;
+    color: #666;
+    transition: all 0.2s;
+}
+
+@media (prefers-color-scheme: dark) {
+    .schedule-section .toggle-btn {
+        background: #3d3d3d;
+        border-color: #5a5a5a;
+        color: #a0a0a0;
+    }
+}
+
+.schedule-section .toggle-btn:hover {
+    border-color: #6c757d;
+    color: #333;
+}
+
+@media (prefers-color-scheme: dark) {
+    .schedule-section .toggle-btn:hover {
+        color: #e0e0e0;
+    }
+}
+
+.schedule-section .toggle-btn.active {
+    background: #6c757d;
+    border-color: #6c757d;
+    color: white;
+}
+
+.schedule-section .countdown-note {
+    font-size: 1em;
+    font-weight: 500;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #334155;
+    transition: color 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+    .schedule-section .countdown-note {
+        color: #cbd5e1;
+    }
+}
+
+.schedule-section .countdown-block {
+    margin-bottom: 25px;
+}
+
+.schedule-section .countdown-block:last-child {
+    margin-bottom: 0;
+}
+
+.schedule-section .countdown-block .countdown-title {
+    font-size: 1.1em;
+    margin-bottom: 8px;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+    .schedule-section .countdown-block .countdown-title {
+        color: #e0e0e0;
+    }
+}
+
+.countdown-period-info {
+    font-size: 1em;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.countdown-period-info--master {
+    color: #5b21b6;
+}
+
+.countdown-period-info--expert {
+    color: #b91c1c;
+}
+
+.countdown-period-info--basic {
+    color: #15803d;
+}
+
+.countdown-period-info--pending {
+    color: #64748b;
+}
+
+@media (prefers-color-scheme: dark) {
+    .countdown-period-info--master {
+        color: #a78bfa;
+    }
+    .countdown-period-info--expert {
+        color: #f87171;
+    }
+    .countdown-period-info--basic {
+        color: #4ade80;
+    }
+    .countdown-period-info--pending {
+        color: #94a3b8;
+    }
+}
+
+.countdown-bar-wrap {
+    margin-bottom: 8px;
+}
+
+.countdown-bar {
+    height: 24px;
+    background: #e9ecef;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+    .countdown-bar {
+        background: #3d3d3d;
+    }
+}
+
+.countdown-fill {
+    height: 100%;
+    border-radius: 12px;
+    transition: width 1s linear;
+}
+
+.countdown-fill--master {
+    background: linear-gradient(90deg, #7c3aed 0%, #a78bfa 100%);
+}
+
+.countdown-fill--expert {
+    background: linear-gradient(90deg, #dc2626 0%, #f87171 100%);
+}
+
+.countdown-fill--basic {
+    background: linear-gradient(90deg, #16a34a 0%, #4ade80 100%);
+}
+
+.countdown-text {
+    font-size: 1em;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.countdown-text--master {
+    color: #5b21b6;
+}
+
+.countdown-text--expert {
+    color: #b91c1c;
+}
+
+.countdown-text--basic {
+    color: #15803d;
+}
+
+.countdown-text--final.countdown-text--master {
+    color: #5b21b6;
+}
+
+.countdown-text--final.countdown-text--expert {
+    color: #b91c1c;
+}
+
+.countdown-text--final.countdown-text--basic {
+    color: #15803d;
+}
+
+@media (prefers-color-scheme: dark) {
+    .countdown-text--master {
+        color: #c4b5fd;
+    }
+    .countdown-text--expert {
+        color: #fca5a5;
+    }
+    .countdown-text--basic {
+        color: #86efac;
+    }
+    .countdown-text--final.countdown-text--master {
+        color: #c4b5fd;
+    }
+    .countdown-text--final.countdown-text--expert {
+        color: #fca5a5;
+    }
+    .countdown-text--final.countdown-text--basic {
+        color: #86efac;
+    }
+}
+
+.timeline-view .timeline-legend {
+    margin-bottom: 20px;
+}
+
+.timeline-legend {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.legend-hint {
+    font-size: 0.8em;
+    color: #666;
+}
+
+@media (prefers-color-scheme: dark) {
+    .legend-hint {
+        color: #a0a0a0;
+    }
+}
+
+.legend-item {
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.legend-item.master {
+    background: #6f42c1;
+    color: white;
+}
+
+.legend-item.expert {
+    background: #dc3545;
+    color: white;
+}
+
+.legend-item.basic {
+    background: #28a745;
+    color: white;
+}
+
+.timeline-block {
+    margin-bottom: 25px;
+}
+
+.timeline-block:last-child {
+    margin-bottom: 0;
+}
+
+.timeline-title {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+@media (prefers-color-scheme: dark) {
+    .timeline-title {
+        color: #e0e0e0;
+    }
+}
+
+.timeline-bar-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -4px;
+    padding-bottom: 4px;
+}
+
+.timeline-bar-scroll::-webkit-scrollbar {
+    height: 6px;
+}
+
+.timeline-bar-scroll::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+}
+
+.timeline-bar {
+    display: flex;
+    height: 50px;
+    min-width: 600px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-segment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 48px;
+    transition: opacity 0.2s, min-width 0.2s, box-shadow 0.2s;
+    position: relative;
+    cursor: pointer;
+}
+
+.timeline-segment:hover {
+    opacity: 0.9;
+}
+
+.timeline-segment.expandable {
+    cursor: pointer;
+}
+
+.segment-label-full {
+    display: none;
+    font-size: 0.8em;
+    text-align: center;
+    line-height: 1.35;
+    padding: 4px 8px;
+}
+
+.timeline-segment.expanded {
+    min-width: 100px;
+    min-height: 50px;
+    z-index: 10;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+}
+
+.timeline-segment.expanded .segment-label {
+    display: none;
+}
+
+.timeline-segment.expanded .segment-label-full {
+    display: block;
+}
+
+.timeline-segment.master {
+    background: #6f42c1;
+    color: white;
+}
+
+.timeline-segment.expert {
+    background: #dc3545;
+    color: white;
+}
+
+.timeline-segment.basic {
+    background: #28a745;
+    color: white;
+}
+
+.segment-label {
+    font-size: 0.75em;
+    text-align: center;
+    line-height: 1.3;
+    padding: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (min-width: 768px) {
+    .segment-label {
+        font-size: 0.85em;
+    }
+}
+
+@media (max-width: 600px) {
+    .timeline-bar {
+        height: 55px;
+    }
+    .segment-label {
+        font-size: 0.65em;
+    }
+}

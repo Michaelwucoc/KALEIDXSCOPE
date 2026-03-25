@@ -8,6 +8,150 @@ const songsById = Object.fromEntries(songs.map(s => [s.id, s]));
 // 区域开放时间 2026/03/25 10:00:00 (UTC+8 北京时间)
 const OPEN_TIME = new Date('2026-03-25T10:00:00+08:00');
 
+// 万花筒条件切换：次日凌晨 4:00 北京时间（与青/白门一致）
+const RESET_HOUR = 4;
+
+// 紫门万花筒各阶段（倒计时用；区间含尾日，切换点为次日凌晨 4:00 → end 为「下一段开始日」）
+const PURPLE_KALEIDO_PERIODS = [
+    { start: '3.25', end: '3.29', type: 'master', life: 1 },   // 3/25–3/28
+    { start: '3.29', end: '4.1', type: 'master', life: 10 },  // 3/29–3/31
+    { start: '4.1', end: '4.4', type: 'master', life: 30 },    // 4/1–4/3
+    { start: '4.4', end: '4.8', type: 'master', life: 50 },    // 4/4–4/7
+    { start: '4.8', end: '4.15', type: 'expert', life: 100 }, // 4/8–4/14
+    { start: '4.15', end: '12.31', type: 'basic', life: 999 } // 4/15–后续
+];
+
+function parsePurpleScheduleDate(str, year) {
+    const [m, d] = str.split('.').map(Number);
+    return new Date(year, m - 1, d, RESET_HOUR, 0, 0);
+}
+
+function getPurpleCurrentPeriod(periods, year) {
+    const now = new Date();
+    for (let i = 0; i < periods.length; i++) {
+        const start = parsePurpleScheduleDate(periods[i].start, year);
+        const end = parsePurpleScheduleDate(periods[i].end, year);
+        if (now >= start && now < end) return { ...periods[i], index: i };
+    }
+    if (periods.length > 0) {
+        const last = periods[periods.length - 1];
+        const start = parsePurpleScheduleDate(last.start, year);
+        if (now >= start) return { ...last, index: periods.length - 1 };
+    }
+    return null;
+}
+
+function getPurpleNextConditionSwitch(periods, year) {
+    const now = new Date();
+    const period = getPurpleCurrentPeriod(periods, year);
+    if (!period || period.index >= periods.length - 1) return null;
+    const nextPeriod = periods[period.index + 1];
+    return parsePurpleScheduleDate(nextPeriod.start, year);
+}
+
+function getPurplePeriodStart(periods, year, index) {
+    return parsePurpleScheduleDate(periods[index].start, year);
+}
+
+function updatePurpleScheduleCountdown() {
+    const year = 2026;
+    const now = new Date();
+    const period = getPurpleCurrentPeriod(PURPLE_KALEIDO_PERIODS, year);
+    const nextSwitch = getPurpleNextConditionSwitch(PURPLE_KALEIDO_PERIODS, year);
+    const fmt = (ms) => {
+        if (ms <= 0) return '即将切换';
+        const d = Math.floor(ms / 86400000);
+        const h = Math.floor((ms % 86400000) / 3600000);
+        const m = Math.floor((ms % 3600000) / 60000);
+        return `${d} 天 ${h} 小时 ${m} 分`;
+    };
+    const fmtDate = (d) => {
+        if (!d) return '';
+        return `${d.getMonth() + 1}月${d.getDate()}日 04:00`;
+    };
+
+    const fillEl = document.getElementById('purple-kaleido-fill');
+    const textEl = document.getElementById('purple-kaleido-countdown-text');
+    const periodEl = document.getElementById('purple-kaleido-period');
+
+    if (!period) {
+        if (periodEl) {
+            periodEl.textContent = '活动尚未开始或不在已公布阶段内';
+            periodEl.className = 'countdown-period-info countdown-period-info--pending';
+        }
+        if (fillEl) fillEl.style.width = '0%';
+        if (textEl) textEl.textContent = '—';
+        return;
+    }
+
+    const typeClass = 'countdown-period-info--' + period.type;
+    if (periodEl) {
+        periodEl.textContent = `当前：${period.type.toUpperCase()} LIFE ${period.life}`;
+        periodEl.className = 'countdown-period-info ' + typeClass;
+    }
+
+    if (!nextSwitch) {
+        if (fillEl) {
+            fillEl.style.width = '100%';
+            fillEl.className = 'countdown-fill countdown-fill--' + period.type;
+        }
+        if (textEl) {
+            textEl.textContent = '当前为最终阶段，无下次切换';
+            textEl.className = 'countdown-text countdown-text--final countdown-text--' + period.type;
+        }
+        return;
+    }
+
+    const periodStart = getPurplePeriodStart(PURPLE_KALEIDO_PERIODS, year, period.index);
+    const totalMs = nextSwitch - periodStart;
+    const elapsed = now - periodStart;
+    const remaining = nextSwitch - now;
+    const progress = Math.min(100, Math.max(0, (elapsed / totalMs) * 100));
+    if (fillEl) {
+        fillEl.style.width = progress + '%';
+        fillEl.className = 'countdown-fill countdown-fill--' + period.type;
+    }
+    if (textEl) {
+        textEl.textContent = `下次切换：${fmtDate(nextSwitch)} · 剩余 ${fmt(remaining)}`;
+        textEl.className = 'countdown-text countdown-text--' + period.type;
+    }
+}
+
+let purpleScheduleToggleBound = false;
+
+function applyPurpleScheduleView() {
+    const view = localStorage.getItem('purple-gate-schedule-view') || 'countdown';
+    const countdownView = document.getElementById('countdown-view');
+    const timelineView = document.getElementById('timeline-view');
+    const btnCountdown = document.getElementById('view-countdown');
+    const btnTimeline = document.getElementById('view-timeline');
+    if (view === 'timeline') {
+        if (countdownView) countdownView.style.display = 'none';
+        if (timelineView) timelineView.style.display = 'block';
+        if (btnCountdown) btnCountdown.classList.remove('active');
+        if (btnTimeline) btnTimeline.classList.add('active');
+    } else {
+        if (countdownView) countdownView.style.display = 'block';
+        if (timelineView) timelineView.style.display = 'none';
+        if (btnCountdown) btnCountdown.classList.add('active');
+        if (btnTimeline) btnTimeline.classList.remove('active');
+    }
+}
+
+function initPurpleScheduleView() {
+    applyPurpleScheduleView();
+    if (purpleScheduleToggleBound) return;
+    purpleScheduleToggleBound = true;
+    document.getElementById('view-countdown')?.addEventListener('click', () => {
+        localStorage.setItem('purple-gate-schedule-view', 'countdown');
+        applyPurpleScheduleView();
+    });
+    document.getElementById('view-timeline')?.addEventListener('click', () => {
+        localStorage.setItem('purple-gate-schedule-view', 'timeline');
+        applyPurpleScheduleView();
+    });
+}
+
 const noCoverSvg = "data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22%3E%3Crect fill=%22%23ddd%22 width=%2280%22 height=%2280%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-size=%2210%22%3E%E6%9A%82%E6%97%A0%E6%9B%B2%E7%BB%98%3C/text%3E%3C/svg%3E";
 
 function loadProgress() {
@@ -540,6 +684,9 @@ function initDiagramZoom() {
 
 updateCountdown();
 setInterval(updateCountdown, 1000);
+initPurpleScheduleView();
+updatePurpleScheduleCountdown();
+setInterval(updatePurpleScheduleCountdown, 60000);
 renderSoloRun();
 renderMultiRun();
 renderSongsPool();
