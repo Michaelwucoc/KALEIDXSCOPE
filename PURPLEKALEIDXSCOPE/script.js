@@ -13,12 +13,12 @@ const RESET_HOUR = 4;
 
 // 紫门万花筒各阶段（倒计时用；区间含尾日，切换点为次日凌晨 4:00 → end 为「下一段开始日」）
 const PURPLE_KALEIDO_PERIODS = [
-    { start: '3.25', end: '3.28', type: 'master', life: 1 },   // 3/25–3/28
-    { start: '3.28', end: '4.1', type: 'master', life: 10 },  // 3/29–3/31
-    { start: '4.1', end: '4.4', type: 'master', life: 30 },    // 4/1–4/3
-    { start: '4.4', end: '4.8', type: 'master', life: 50 },    // 4/4–4/7
-    { start: '4.8', end: '4.15', type: 'expert', life: 100 }, // 4/8–4/14
-    { start: '4.15', end: '12.31', type: 'basic', life: 999 } // 4/15–后续
+    { start: '3.25', end: '3.28', type: 'master', life: 1 },   // 3.25–3.27
+    { start: '3.28', end: '3.31', type: 'master', life: 10 },  // 3.28–3.30
+    { start: '3.31', end: '4.3', type: 'master', life: 30 },   // 3.31–4.2
+    { start: '4.3', end: '4.7', type: 'master', life: 50 },    // 4.3–4.6
+    { start: '4.7', end: '4.15', type: 'expert', life: 100 }, // 4.7–4.14
+    { start: '4.15', end: '12.31', type: 'basic', life: 999 } // 4.15–后续
 ];
 
 function parsePurpleScheduleDate(str, year) {
