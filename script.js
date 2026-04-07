@@ -56,7 +56,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     blackCard.classList.add('black-revealed', 'black-early-unlock');
                     sessionStorage.setItem('black-door-revealed', '1');
                     if (typeof umami !== 'undefined') umami.track('black-door-revealed');
-                    if (typeof posthog !== 'undefined' && posthog.capture) posthog.capture('black-door-revealed');
                 }
             }
             document.body.addEventListener('click', blackRevealHandler);
