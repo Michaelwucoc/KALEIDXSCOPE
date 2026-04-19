@@ -347,12 +347,66 @@ body.theme-black .countdown-section .countdown-title {
     font-size: 1em;
     font-weight: 500;
     color: #555;
+    margin-bottom: 16px;
 }
 
 .countdown-note--tbd {
     font-size: 1.2em;
     color: #4a6a8a;
     font-weight: 600;
+}
+
+.countdown-display {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 16px;
+}
+
+.countdown-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 70px;
+}
+
+.countdown-value {
+    font-size: 2.5em;
+    font-weight: bold;
+    line-height: 1.2;
+    color: #6eb3ff;
+}
+
+body.theme-black .countdown-value {
+    color: #4a6a9a;
+}
+
+.countdown-label {
+    font-size: 0.9em;
+    margin-top: 4px;
+    color: #a0a0a0;
+}
+
+body.theme-black .countdown-label {
+    color: #666;
+}
+
+.countdown-status {
+    font-size: 1.05em;
+    font-weight: 600;
+}
+
+.countdown-status.open {
+    color: #28a745;
+}
+
+.countdown-status.closed {
+    color: #f0ad4e;
+}
+
+body.theme-black .countdown-status.closed {
+    color: #c45c00;
 }
 
 /* 解锁条件 */

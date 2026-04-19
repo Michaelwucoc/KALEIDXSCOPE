@@ -1,10 +1,11 @@
 // 主页交互脚本
 
-// 紫色之门开放时间 2026/03/25 10:00:00 (UTC+8)
-const PURPLE_OPEN_TIME = new Date('2026-03-25T00:00:00+08:00');
+// 紫色之门开放时间（与 PURPLEKALEIDXSCOPE 页 OPEN_TIME 一致）
+const PURPLE_OPEN_TIME = new Date('2026-03-25T10:00:00+08:00');
 const PURPLE_REVEAL_CLICKS = 7;
 
-// 黑色之门：区域开放时间待定，需连续点击 14 次解锁
+// 黑色之门开放时间（与 BLACKKALEIDXSCOPE 页 OPEN_TIME 一致）；未到时间时可点击 14 次提前解锁（带模糊）
+const BLACK_OPEN_TIME = new Date('2026-04-28T10:00:00+08:00');
 const BLACK_REVEAL_CLICKS = 14;
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -40,7 +41,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (blackCard) {
-        if (sessionStorage.getItem('black-door-revealed') === '1') {
+        if (now >= BLACK_OPEN_TIME) {
+            // 倒计时结束：正常显示，无模糊（与紫门一致）
+            blackCard.classList.add('black-revealed');
+        } else if (sessionStorage.getItem('black-door-revealed') === '1') {
             blackCard.classList.add('black-revealed', 'black-early-unlock');
         } else {
             let blackClickCount = 0;
@@ -61,6 +65,21 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.addEventListener('click', blackRevealHandler);
         }
     }
+
+    // 到开放时刻后自动「正式解锁」（去掉提前解锁的模糊），无需刷新
+    function applyIndexDoorOpenState() {
+        const n = new Date();
+        if (purpleCard && n >= PURPLE_OPEN_TIME) {
+            purpleCard.classList.add('purple-revealed');
+            purpleCard.classList.remove('purple-early-unlock');
+        }
+        if (blackCard && n >= BLACK_OPEN_TIME) {
+            blackCard.classList.add('black-revealed');
+            blackCard.classList.remove('black-early-unlock');
+        }
+    }
+    applyIndexDoorOpenState();
+    setInterval(applyIndexDoorOpenState, 1000);
 
     // 为门卡片添加点击动画效果
     const doorCards = document.querySelectorAll('.door-card:not(.coming-soon)');

@@ -6,6 +6,54 @@ const BLACK_GATE_TRACK3_FIXED = gate.track3;
 
 const noCoverSvg = "data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22%3E%3Crect fill=%22%23ddd%22 width=%2280%22 height=%2280%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-size=%2210%22%3E%E6%9A%82%E6%97%A0%E6%9B%B2%E7%BB%98%3C/text%3E%3C/svg%3E";
 
+// 区域开放时间 2026/04/28 10:00:00 (UTC+8 北京时间)
+const OPEN_TIME = new Date('2026-04-28T10:00:00+08:00');
+
+function updateCountdown() {
+    const now = new Date();
+    const section = document.getElementById('countdown-section');
+    const titleEl = document.querySelector('#countdown-section .countdown-title');
+    const noteEl = document.querySelector('#countdown-section .countdown-note');
+    const displayEl = document.getElementById('countdown-display');
+    const statusEl = document.getElementById('countdown-status');
+
+    if (now >= OPEN_TIME) {
+        if (section) section.classList.add('open');
+        if (titleEl) titleEl.textContent = '区域已开放';
+        if (noteEl) noteEl.style.display = 'none';
+        if (displayEl) displayEl.style.display = 'none';
+        if (statusEl) {
+            statusEl.textContent = '✅ 区域已开放！';
+            statusEl.className = 'countdown-status open';
+        }
+        return;
+    }
+
+    const diff = OPEN_TIME - now;
+    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+    const daysEl = document.getElementById('countdown-days');
+    const hoursEl = document.getElementById('countdown-hours');
+    const minutesEl = document.getElementById('countdown-minutes');
+    const secondsEl = document.getElementById('countdown-seconds');
+    if (daysEl) daysEl.textContent = String(d).padStart(2, '0');
+    if (hoursEl) hoursEl.textContent = String(h).padStart(2, '0');
+    if (minutesEl) minutesEl.textContent = String(m).padStart(2, '0');
+    if (secondsEl) secondsEl.textContent = String(s).padStart(2, '0');
+
+    if (section) section.classList.remove('open');
+    if (titleEl) titleEl.textContent = '区域开放倒计时';
+    if (noteEl) noteEl.style.display = '';
+    if (displayEl) displayEl.style.display = '';
+    if (statusEl) {
+        statusEl.textContent = '⏳ 区域尚未开放';
+        statusEl.className = 'countdown-status closed';
+    }
+}
+
 function loadProgress() {
     try {
         const raw = localStorage.getItem('maimai-black-gate-progress');
@@ -313,6 +361,9 @@ function initDiagramZoom() {
         }
     });
 }
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
 
 updateStats();
 renderSongs();

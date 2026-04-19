@@ -211,7 +211,7 @@ body {
     filter: blur(2px);
 }
 
-/* 黑色之门：默认完全隐藏，点击 14 次解锁 */
+/* 黑色之门：默认完全隐藏；开放后或点击 14 次解锁后显示（仅提前解锁带模糊，与紫门一致） */
 .black-door-card {
     display: none !important;
 }
