@@ -97,9 +97,9 @@ function updateScheduleCountdown() {
         }
         if (!nextSwitch) {
             if (periodEl) {
-                periodEl.textContent = '';
-                periodEl.className = 'countdown-period-info';
-                periodEl.style.display = 'none';
+                periodEl.textContent = `当前阶段：${period.type.toUpperCase()} LIFE ${period.life}`;
+                periodEl.className = 'countdown-period-info countdown-period-info--' + period.type;
+                periodEl.style.display = '';
             }
             if (fillEl) fillEl.style.width = '100%';
             if (textEl) {
@@ -112,12 +112,14 @@ function updateScheduleCountdown() {
         if (periodEl) {
             periodEl.style.display = '';
             if (nextPhase) {
-                periodEl.textContent = `下个阶段：${nextPhase.type.toUpperCase()} LIFE ${nextPhase.life}`;
-                periodEl.className = 'countdown-period-info countdown-period-info--' + nextPhase.type;
-            } else {
-                periodEl.textContent = '';
+                periodEl.innerHTML =
+                    `<span class="countdown-period-part countdown-period-info--${period.type}">当前阶段：${period.type.toUpperCase()} LIFE ${period.life}</span>` +
+                    `<span class="countdown-period-sep"> · </span>` +
+                    `<span class="countdown-period-part countdown-period-info--${nextPhase.type}">下个阶段：${nextPhase.type.toUpperCase()} LIFE ${nextPhase.life}</span>`;
                 periodEl.className = 'countdown-period-info';
-                periodEl.style.display = 'none';
+            } else {
+                periodEl.textContent = `当前阶段：${period.type.toUpperCase()} LIFE ${period.life}`;
+                periodEl.className = 'countdown-period-info countdown-period-info--' + period.type;
             }
         }
         const periodStart = getPeriodStart(periods, year, period.index, resetHour);

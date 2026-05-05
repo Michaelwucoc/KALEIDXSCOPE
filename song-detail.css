@@ -341,3 +341,18 @@ body.theme-black .song-detail-tag {
 .song-display-settings-btn-wrap:hover {
     background: rgba(124, 184, 232, 0.15);
 }
+
+/* 各门时间表倒计时：「当前阶段」与「下个阶段」分色，中间分隔 */
+.countdown-period-part {
+    font-weight: 600;
+}
+.countdown-period-sep {
+    font-weight: 600;
+    color: #64748b;
+    padding: 0 0.2em;
+}
+@media (prefers-color-scheme: dark) {
+    .countdown-period-sep {
+        color: #94a3b8;
+    }
+}
