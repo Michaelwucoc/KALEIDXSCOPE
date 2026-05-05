@@ -48,6 +48,36 @@
         localStorage.setItem(DIFFICULTY_STORAGE_KEY, level);
     }
 
+    function getDxQueryDiffFromLevel(levelKey) {
+        // v.awmc.cc diff 对应：2 Basic、3 Advance、4 Expert、5 Master
+        const map = {
+            basic: 2,
+            advanced: 3,
+            expert: 4,
+            master: 5
+        };
+        return map[levelKey] ?? 4;
+    }
+
+    function updateAwmcConfirmLinks() {
+        if (typeof document === 'undefined') return;
+        const diff = getDxQueryDiffFromLevel(getDifficultyLevel());
+        const anchors = document.querySelectorAll('a[href^="https://v.awmc.cc/?song="], a[href*="v.awmc.cc/?song="]');
+        anchors.forEach(a => {
+            const href = a.getAttribute('href');
+            if (!href) return;
+            try {
+                const url = new URL(href);
+                if (url.hostname !== 'v.awmc.cc') return;
+                if (!url.searchParams.has('song')) return;
+                url.searchParams.set('diff', String(diff));
+                a.href = url.toString();
+            } catch (e) {
+                // ignore invalid URLs
+            }
+        });
+    }
+
     function getDifficultyAt(song, diffIndex) {
         if (!song) return null;
         const ds = song.ds || [];
@@ -107,6 +137,10 @@
         const btn = document.getElementById('song-display-settings-btn');
         const modal = document.getElementById('song-display-settings-modal');
         if (!btn || !modal) return;
+
+        // 页面加载时就同步一次，避免初始 diff 与本地设置不一致
+        updateAwmcConfirmLinks();
+        window.addEventListener('song-display-changed', updateAwmcConfirmLinks);
 
         function ensureDifficultyRow() {
             let row = modal.querySelector('.song-display-settings-difficulty');
