@@ -111,6 +111,12 @@
     background: rgba(255, 255, 255, 0.05);
 }
 
+.song-detail-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin: 4px 0 14px;
+}
+
 .song-detail-meta {
     font-size: 0.95rem;
     color: #b8b8b8;

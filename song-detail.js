@@ -5,6 +5,34 @@
 (function (global) {
     const LONG_PRESS_MS = 500;
 
+    function getDxQueryDiffFromDisplaySetting() {
+        // 与 song-display.js 的难度选择保持一致：basic/advanced/expert/master
+        let levelKey = 'expert';
+        try {
+            const raw = localStorage.getItem('maimai-song-display-difficulty');
+            if (raw === 'basic' || raw === 'advanced' || raw === 'expert' || raw === 'master') levelKey = raw;
+        } catch (e) { /* ignore */ }
+        const map = { basic: 2, advanced: 3, expert: 4, master: 5 };
+        return map[levelKey] ?? 4;
+    }
+
+    function normalizeSongIdForAwmc(songId) {
+        const n = Number(songId);
+        if (!Number.isFinite(n)) return null;
+        return n > 10000 ? (n - 10000) : n;
+    }
+
+    function buildAwmcPreviewUrl(songId) {
+        const normalized = normalizeSongIdForAwmc(songId);
+        if (normalized == null) return null;
+        const diff = getDxQueryDiffFromDisplaySetting();
+        const url = new URL('https://v.awmc.cc/');
+        url.searchParams.set('song', String(normalized));
+        url.searchParams.set('kind', 'dx');
+        url.searchParams.set('diff', String(diff));
+        return url.toString();
+    }
+
     function escapeHtml(s) {
         if (s == null) return '';
         const div = document.createElement('div');
@@ -42,6 +70,11 @@
                 <thead><tr><th>难度</th><th>等级</th><th>定数</th></tr></thead>
                 <tbody>${diffRows}</tbody>
             </table>
+            <div class="song-detail-actions">
+                <a class="btn btn-info btn-sm song-detail-awmc-link" href="${escapeHtml(buildAwmcPreviewUrl(song.id) || '')}" target="_blank" rel="noopener noreferrer" data-song-id="${escapeHtml(song.id)}">
+                    铺面预览
+                </a>
+            </div>
             <div class="song-detail-meta">
                 <p><strong>乐曲分类：</strong>${escapeHtml(info.genre || '-')}</p>
                 <p><strong>BPM：</strong>${info.bpm ?? '-'}</p>
@@ -104,6 +137,15 @@
 
     function initSongDetail() {
         let longPressTimer = null;
+
+        // 当用户修改“设置展示信息”的难度时，若详情弹窗已打开则同步更新预览链接 diff
+        window.addEventListener('song-display-changed', () => {
+            const link = document.querySelector('#song-detail-content .song-detail-awmc-link');
+            if (!link) return;
+            const songId = link.getAttribute('data-song-id');
+            const href = buildAwmcPreviewUrl(songId);
+            if (href) link.href = href;
+        });
 
         document.addEventListener('dblclick', (e) => {
             const cover = e.target.closest('.song-cover, .gate-chip-cover, .reference-cover, .remaining-cover-wrap');
