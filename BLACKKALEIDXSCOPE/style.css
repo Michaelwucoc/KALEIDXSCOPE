@@ -409,6 +409,414 @@ body.theme-black .countdown-status.closed {
     color: #c45c00;
 }
 
+/* 黑门时间表（结构与白门/青门一致） */
+.schedule-section {
+    margin-bottom: 35px;
+    padding: 25px;
+    background: #3d3d3d;
+    border: 2px solid #4a4a4a;
+    border-radius: 15px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+body.theme-black .schedule-section {
+    background: #f8f9fa;
+    border-color: #e9ecef;
+}
+
+.schedule-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.schedule-header h2 {
+    font-size: 1.25em;
+    margin: 0;
+    color: #e0e0e0;
+    transition: color 0.3s ease;
+}
+
+body.theme-black .schedule-header h2 {
+    color: #333;
+}
+
+.schedule-section .view-toggle {
+    display: flex;
+    gap: 8px;
+}
+
+.schedule-section .toggle-btn {
+    padding: 8px 16px;
+    border: 2px solid #5a5a5a;
+    background: #2d2d2d;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95em;
+    color: #a0a0a0;
+    transition: all 0.2s;
+}
+
+body.theme-black .schedule-section .toggle-btn {
+    border-color: #e9ecef;
+    background: white;
+    color: #666;
+}
+
+.schedule-section .toggle-btn:hover {
+    border-color: #6c757d;
+    color: #e0e0e0;
+}
+
+body.theme-black .schedule-section .toggle-btn:hover {
+    color: #333;
+}
+
+.schedule-section .toggle-btn.active {
+    background: #6c757d;
+    border-color: #6c757d;
+    color: white;
+}
+
+.schedule-switch-note {
+    font-size: 0.95em;
+    font-weight: 500;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #94a3b8;
+    line-height: 1.45;
+}
+
+body.theme-black .schedule-switch-note {
+    color: #334155;
+}
+
+.schedule-section .countdown-block {
+    margin-bottom: 25px;
+}
+
+.schedule-section .countdown-block:last-child {
+    margin-bottom: 0;
+}
+
+.schedule-section .countdown-block .countdown-title {
+    font-size: 1.1em;
+    margin-bottom: 8px;
+    color: #e0e0e0;
+    transition: color 0.3s ease;
+}
+
+body.theme-black .schedule-section .countdown-block .countdown-title {
+    color: #333;
+}
+
+.countdown-period-info {
+    font-size: 1em;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.countdown-period-info--master {
+    color: #a78bfa;
+}
+
+.countdown-period-info--expert {
+    color: #f87171;
+}
+
+.countdown-period-info--basic {
+    color: #4ade80;
+}
+
+.countdown-period-info--pending {
+    color: #94a3b8;
+}
+
+body.theme-black .countdown-period-info--master {
+    color: #5b21b6;
+}
+
+body.theme-black .countdown-period-info--expert {
+    color: #b91c1c;
+}
+
+body.theme-black .countdown-period-info--basic {
+    color: #15803d;
+}
+
+body.theme-black .countdown-period-info--pending {
+    color: #64748b;
+}
+
+.countdown-bar-wrap {
+    margin-bottom: 8px;
+}
+
+.countdown-bar {
+    height: 24px;
+    background: #2d2d2d;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+}
+
+body.theme-black .countdown-bar {
+    background: #e9ecef;
+}
+
+.countdown-fill {
+    height: 100%;
+    border-radius: 12px;
+    transition: width 1s linear;
+}
+
+.countdown-fill--master {
+    background: linear-gradient(90deg, #7c3aed 0%, #a78bfa 100%);
+}
+
+.countdown-fill--expert {
+    background: linear-gradient(90deg, #dc2626 0%, #f87171 100%);
+}
+
+.countdown-fill--basic {
+    background: linear-gradient(90deg, #16a34a 0%, #4ade80 100%);
+}
+
+.countdown-text {
+    font-size: 1em;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.countdown-text--master {
+    color: #c4b5fd;
+}
+
+.countdown-text--expert {
+    color: #fca5a5;
+}
+
+.countdown-text--basic {
+    color: #86efac;
+}
+
+.countdown-text--final.countdown-text--master {
+    color: #c4b5fd;
+}
+
+.countdown-text--final.countdown-text--expert {
+    color: #fca5a5;
+}
+
+.countdown-text--final.countdown-text--basic {
+    color: #86efac;
+}
+
+body.theme-black .countdown-text--master {
+    color: #5b21b6;
+}
+
+body.theme-black .countdown-text--expert {
+    color: #b91c1c;
+}
+
+body.theme-black .countdown-text--basic {
+    color: #15803d;
+}
+
+body.theme-black .countdown-text--final.countdown-text--master {
+    color: #5b21b6;
+}
+
+body.theme-black .countdown-text--final.countdown-text--expert {
+    color: #b91c1c;
+}
+
+body.theme-black .countdown-text--final.countdown-text--basic {
+    color: #15803d;
+}
+
+.timeline-view .timeline-legend {
+    margin-bottom: 20px;
+}
+
+.timeline-legend {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.legend-hint {
+    font-size: 0.8em;
+    color: #a0a0a0;
+}
+
+body.theme-black .legend-hint {
+    color: #666;
+}
+
+.legend-item {
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+.legend-item.master {
+    background: #6f42c1;
+    color: white;
+}
+
+.legend-item.expert {
+    background: #dc3545;
+    color: white;
+}
+
+.legend-item.basic {
+    background: #28a745;
+    color: white;
+}
+
+.timeline-block {
+    margin-bottom: 25px;
+}
+
+.timeline-block:last-child {
+    margin-bottom: 0;
+}
+
+.timeline-title {
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    color: #e0e0e0;
+    transition: color 0.3s ease;
+}
+
+body.theme-black .timeline-title {
+    color: #333;
+}
+
+.timeline-bar-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    margin: 0 -4px;
+    padding-bottom: 4px;
+}
+
+.timeline-bar-scroll::-webkit-scrollbar {
+    height: 6px;
+}
+
+.timeline-bar-scroll::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+body.theme-black .timeline-bar-scroll::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.timeline-bar {
+    display: flex;
+    height: 50px;
+    min-width: 600px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+body.theme-black .timeline-bar {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.timeline-segment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 48px;
+    transition: opacity 0.2s, min-width 0.2s, box-shadow 0.2s;
+    position: relative;
+    cursor: pointer;
+}
+
+.timeline-segment:hover {
+    opacity: 0.9;
+}
+
+.timeline-segment.expandable {
+    cursor: pointer;
+}
+
+.segment-label-full {
+    display: none;
+    font-size: 0.8em;
+    text-align: center;
+    line-height: 1.35;
+    padding: 4px 8px;
+}
+
+.timeline-segment.expanded {
+    min-width: 100px;
+    min-height: 50px;
+    z-index: 10;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+
+.timeline-segment.expanded .segment-label {
+    display: none;
+}
+
+.timeline-segment.expanded .segment-label-full {
+    display: block;
+}
+
+.timeline-segment.master {
+    background: #6f42c1;
+    color: white;
+}
+
+.timeline-segment.expert {
+    background: #dc3545;
+    color: white;
+}
+
+.timeline-segment.basic {
+    background: #28a745;
+    color: white;
+}
+
+.segment-label {
+    font-size: 0.75em;
+    text-align: center;
+    line-height: 1.3;
+    padding: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (min-width: 768px) {
+    .segment-label {
+        font-size: 0.85em;
+    }
+}
+
+@media (max-width: 600px) {
+    .timeline-bar {
+        height: 55px;
+    }
+    .segment-label {
+        font-size: 0.65em;
+    }
+}
+
 /* 解锁条件 */
 .requirements-section {
     margin-bottom: 30px;

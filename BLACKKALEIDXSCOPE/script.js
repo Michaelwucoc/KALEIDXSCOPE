@@ -9,6 +9,166 @@ const noCoverSvg = "data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/sv
 // 区域开放时间 2026/04/28 10:00:00 (UTC+8 北京时间)
 const OPEN_TIME = new Date('2026-04-28T10:00:00+08:00');
 
+// 门条件切换：次日凌晨 4:00 北京时间
+const BLACK_GATE_RESET_HOUR = 4;
+// 完美挑战：每日凌晨 0:00 北京时间
+const BLACK_PERFECT_RESET_HOUR = 0;
+
+// 黑门 门曲阶段（倒计时用；end 为「下一段开始」的时刻）
+const BLACK_GATE_PERIODS = [
+    { start: '4.28', end: '5.1', type: 'master', life: 1 },
+    { start: '5.1', end: '5.4', type: 'master', life: 10 },
+    { start: '5.4', end: '5.7', type: 'master', life: 30 },
+    { start: '5.7', end: '5.11', type: 'master', life: 50 },
+    { start: '5.11', end: '5.18', type: 'expert', life: 100 },
+    { start: '5.18', end: '12.31', type: 'basic', life: 999 }
+];
+
+const BLACK_PERFECT_PERIODS = [
+    { start: '4.28', end: '5.5', type: 'master', life: 1 },
+    { start: '5.5', end: '5.12', type: 'master', life: 10 },
+    { start: '5.12', end: '5.19', type: 'expert', life: 50 },
+    { start: '5.19', end: '5.26', type: 'basic', life: 100 },
+    { start: '5.26', end: '12.31', type: 'basic', life: 300 }
+];
+
+function parsePeriodDate(str, year, resetHour) {
+    const [m, d] = str.split('.').map(Number);
+    return new Date(year, m - 1, d, resetHour, 0, 0);
+}
+
+function getCurrentPeriod(periods, year, resetHour) {
+    const now = new Date();
+    for (let i = 0; i < periods.length; i++) {
+        const start = parsePeriodDate(periods[i].start, year, resetHour);
+        const end = parsePeriodDate(periods[i].end, year, resetHour);
+        if (now >= start && now < end) return { ...periods[i], index: i };
+    }
+    if (periods.length > 0) {
+        const last = periods[periods.length - 1];
+        const start = parsePeriodDate(last.start, year, resetHour);
+        if (now >= start) return { ...last, index: periods.length - 1 };
+    }
+    return null;
+}
+
+function getNextConditionSwitch(periods, year, resetHour) {
+    const period = getCurrentPeriod(periods, year, resetHour);
+    if (!period || period.index >= periods.length - 1) return null;
+    const nextPeriod = periods[period.index + 1];
+    return parsePeriodDate(nextPeriod.start, year, resetHour);
+}
+
+function getPeriodStart(periods, year, index, resetHour) {
+    return parsePeriodDate(periods[index].start, year, resetHour);
+}
+
+function formatSwitchDate(d, resetHour) {
+    if (!d) return '';
+    const hm = resetHour === 0 ? '00:00' : String(resetHour).padStart(2, '0') + ':00';
+    return `${d.getMonth() + 1}月${d.getDate()}日 ${hm}`;
+}
+
+function updateScheduleCountdown() {
+    const year = 2026;
+    const now = new Date();
+    const gatePeriod = getCurrentPeriod(BLACK_GATE_PERIODS, year, BLACK_GATE_RESET_HOUR);
+    const perfectPeriod = getCurrentPeriod(BLACK_PERFECT_PERIODS, year, BLACK_PERFECT_RESET_HOUR);
+    const gateNextSwitch = getNextConditionSwitch(BLACK_GATE_PERIODS, year, BLACK_GATE_RESET_HOUR);
+    const perfectNextSwitch = getNextConditionSwitch(BLACK_PERFECT_PERIODS, year, BLACK_PERFECT_RESET_HOUR);
+    const fmt = (ms) => {
+        if (ms <= 0) return '即将切换';
+        const d = Math.floor(ms / 86400000);
+        const h = Math.floor((ms % 86400000) / 3600000);
+        const m = Math.floor((ms % 3600000) / 60000);
+        return `${d} 天 ${h} 小时 ${m} 分`;
+    };
+
+    function renderBlock(fillEl, textEl, periodEl, period, nextSwitch, periods, resetHour) {
+        if (!period) {
+            if (periodEl) {
+                periodEl.textContent = '活动尚未开始';
+                periodEl.className = 'countdown-period-info countdown-period-info--pending';
+            }
+            if (fillEl) fillEl.style.width = '0%';
+            if (textEl) textEl.textContent = '—';
+            return;
+        }
+        const typeClass = 'countdown-period-info--' + period.type;
+        if (periodEl) {
+            periodEl.textContent = `当前：${period.type.toUpperCase()} LIFE ${period.life}`;
+            periodEl.className = 'countdown-period-info ' + typeClass;
+        }
+        if (!nextSwitch) {
+            if (fillEl) fillEl.style.width = '100%';
+            if (textEl) {
+                textEl.textContent = '当前为最终阶段，无下次切换';
+                textEl.className = 'countdown-text countdown-text--final countdown-text--' + period.type;
+            }
+            return;
+        }
+        const periodStart = getPeriodStart(periods, year, period.index, resetHour);
+        const totalMs = nextSwitch - periodStart;
+        const elapsed = now - periodStart;
+        const remaining = nextSwitch - now;
+        const progress = Math.min(100, Math.max(0, (elapsed / totalMs) * 100));
+        if (fillEl) {
+            fillEl.style.width = progress + '%';
+            fillEl.className = 'countdown-fill countdown-fill--' + period.type;
+        }
+        if (textEl) {
+            textEl.textContent = `下次切换：${formatSwitchDate(nextSwitch, resetHour)} · 剩余 ${fmt(remaining)}`;
+            textEl.className = 'countdown-text countdown-text--' + period.type;
+        }
+    }
+
+    renderBlock(
+        document.getElementById('black-gate-fill'),
+        document.getElementById('black-gate-countdown-text'),
+        document.getElementById('black-gate-period'),
+        gatePeriod,
+        gateNextSwitch,
+        BLACK_GATE_PERIODS,
+        BLACK_GATE_RESET_HOUR
+    );
+    renderBlock(
+        document.getElementById('black-perfect-fill'),
+        document.getElementById('black-perfect-countdown-text'),
+        document.getElementById('black-perfect-period'),
+        perfectPeriod,
+        perfectNextSwitch,
+        BLACK_PERFECT_PERIODS,
+        BLACK_PERFECT_RESET_HOUR
+    );
+}
+
+function applyBlackScheduleView() {
+    const view = localStorage.getItem('black-gate-schedule-view') || 'countdown';
+    const countdownView = document.getElementById('countdown-view');
+    const timelineView = document.getElementById('timeline-view');
+    const btnCountdown = document.getElementById('view-countdown');
+    const btnTimeline = document.getElementById('view-timeline');
+    const isTimeline = view === 'timeline';
+    if (countdownView) countdownView.style.display = isTimeline ? 'none' : 'block';
+    if (timelineView) timelineView.style.display = isTimeline ? 'block' : 'none';
+    if (btnCountdown) btnCountdown.classList.toggle('active', !isTimeline);
+    if (btnTimeline) btnTimeline.classList.toggle('active', isTimeline);
+}
+
+function initBlackScheduleView() {
+    const btnCountdown = document.getElementById('view-countdown');
+    const btnTimeline = document.getElementById('view-timeline');
+    applyBlackScheduleView();
+    btnCountdown?.addEventListener('click', () => {
+        localStorage.setItem('black-gate-schedule-view', 'countdown');
+        applyBlackScheduleView();
+    });
+    btnTimeline?.addEventListener('click', () => {
+        localStorage.setItem('black-gate-schedule-view', 'timeline');
+        applyBlackScheduleView();
+    });
+}
+
 function updateCountdown() {
     const now = new Date();
     const section = document.getElementById('countdown-section');
@@ -361,6 +521,10 @@ function initDiagramZoom() {
         }
     });
 }
+
+initBlackScheduleView();
+updateScheduleCountdown();
+setInterval(updateScheduleCountdown, 60000);
 
 updateCountdown();
 setInterval(updateCountdown, 1000);
