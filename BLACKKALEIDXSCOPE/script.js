@@ -89,23 +89,36 @@ function updateScheduleCountdown() {
             if (periodEl) {
                 periodEl.textContent = '活动尚未开始';
                 periodEl.className = 'countdown-period-info countdown-period-info--pending';
+                periodEl.style.display = '';
             }
             if (fillEl) fillEl.style.width = '0%';
             if (textEl) textEl.textContent = '—';
             return;
         }
-        const typeClass = 'countdown-period-info--' + period.type;
-        if (periodEl) {
-            periodEl.textContent = `当前：${period.type.toUpperCase()} LIFE ${period.life}`;
-            periodEl.className = 'countdown-period-info ' + typeClass;
-        }
         if (!nextSwitch) {
+            if (periodEl) {
+                periodEl.textContent = '';
+                periodEl.className = 'countdown-period-info';
+                periodEl.style.display = 'none';
+            }
             if (fillEl) fillEl.style.width = '100%';
             if (textEl) {
                 textEl.textContent = '当前为最终阶段，无下次切换';
                 textEl.className = 'countdown-text countdown-text--final countdown-text--' + period.type;
             }
             return;
+        }
+        const nextPhase = periods[period.index + 1];
+        if (periodEl) {
+            periodEl.style.display = '';
+            if (nextPhase) {
+                periodEl.textContent = `下个阶段：${nextPhase.type.toUpperCase()} LIFE ${nextPhase.life}`;
+                periodEl.className = 'countdown-period-info countdown-period-info--' + nextPhase.type;
+            } else {
+                periodEl.textContent = '';
+                periodEl.className = 'countdown-period-info';
+                periodEl.style.display = 'none';
+            }
         }
         const periodStart = getPeriodStart(periods, year, period.index, resetHour);
         const totalMs = nextSwitch - periodStart;
@@ -123,15 +136,6 @@ function updateScheduleCountdown() {
     }
 
     renderBlock(
-        document.getElementById('black-gate-fill'),
-        document.getElementById('black-gate-countdown-text'),
-        document.getElementById('black-gate-period'),
-        gatePeriod,
-        gateNextSwitch,
-        BLACK_GATE_PERIODS,
-        BLACK_GATE_RESET_HOUR
-    );
-    renderBlock(
         document.getElementById('black-perfect-fill'),
         document.getElementById('black-perfect-countdown-text'),
         document.getElementById('black-perfect-period'),
@@ -139,6 +143,15 @@ function updateScheduleCountdown() {
         perfectNextSwitch,
         BLACK_PERFECT_PERIODS,
         BLACK_PERFECT_RESET_HOUR
+    );
+    renderBlock(
+        document.getElementById('black-gate-fill'),
+        document.getElementById('black-gate-countdown-text'),
+        document.getElementById('black-gate-period'),
+        gatePeriod,
+        gateNextSwitch,
+        BLACK_GATE_PERIODS,
+        BLACK_GATE_RESET_HOUR
     );
 }
 

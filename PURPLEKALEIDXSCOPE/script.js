@@ -78,19 +78,19 @@ function updatePurpleScheduleCountdown() {
         if (periodEl) {
             periodEl.textContent = '活动尚未开始或不在已公布阶段内';
             periodEl.className = 'countdown-period-info countdown-period-info--pending';
+            periodEl.style.display = '';
         }
         if (fillEl) fillEl.style.width = '0%';
         if (textEl) textEl.textContent = '—';
         return;
     }
 
-    const typeClass = 'countdown-period-info--' + period.type;
-    if (periodEl) {
-        periodEl.textContent = `当前：${period.type.toUpperCase()} LIFE ${period.life}`;
-        periodEl.className = 'countdown-period-info ' + typeClass;
-    }
-
     if (!nextSwitch) {
+        if (periodEl) {
+            periodEl.textContent = '';
+            periodEl.className = 'countdown-period-info';
+            periodEl.style.display = 'none';
+        }
         if (fillEl) {
             fillEl.style.width = '100%';
             fillEl.className = 'countdown-fill countdown-fill--' + period.type;
@@ -100,6 +100,19 @@ function updatePurpleScheduleCountdown() {
             textEl.className = 'countdown-text countdown-text--final countdown-text--' + period.type;
         }
         return;
+    }
+
+    const nextPhase = PURPLE_KALEIDO_PERIODS[period.index + 1];
+    if (periodEl) {
+        periodEl.style.display = '';
+        if (nextPhase) {
+            periodEl.textContent = `下个阶段：${nextPhase.type.toUpperCase()} LIFE ${nextPhase.life}`;
+            periodEl.className = 'countdown-period-info countdown-period-info--' + nextPhase.type;
+        } else {
+            periodEl.textContent = '';
+            periodEl.className = 'countdown-period-info';
+            periodEl.style.display = 'none';
+        }
     }
 
     const periodStart = getPurplePeriodStart(PURPLE_KALEIDO_PERIODS, year, period.index);
